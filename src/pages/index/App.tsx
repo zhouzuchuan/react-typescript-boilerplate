@@ -1,8 +1,7 @@
-import * as React from 'react'
-import { Route, Switch, NavLink } from 'react-router-dom'
-import { asyncComponent } from 'react-enhanced'
-
-import * as s from './app.less'
+import React from 'react';
+import { Route, Switch, NavLink } from 'react-router-dom';
+import { asyncComponent } from 'react-enhanced';
+import styled from 'styled-components';
 
 export default class App extends React.Component {
     state = {
@@ -16,19 +15,19 @@ export default class App extends React.Component {
                 path: '/about',
             },
         ],
-    }
+    };
     render() {
-        const { menuData } = this.state
+        const { menuData } = this.state;
         return [
-            <div className={s['header-box']} key="header">
+            <Headerbox key="header">
                 {menuData.map(({ name, path }) => (
-                    <NavLink activeClassName={s.active} exact={true} key={name} strict={true} to={path}>
+                    <NavLink activeClassName="active" exact={true} key={name} strict={true} to={path}>
                         {name}
                     </NavLink>
                 ))}
-            </div>,
+            </Headerbox>,
             <Route key="body" render={this.routeRender} />,
-        ]
+        ];
     }
     private routeRender = ({ match }: { match: any }) => (
         <Switch>
@@ -42,5 +41,22 @@ export default class App extends React.Component {
             />
             <Route component={asyncComponent(() => import('@cn/About'))} exact={true} path="/about" />
         </Switch>
-    )
+    );
 }
+
+const Headerbox = styled.div`
+    padding: 30px;
+    line-height: 26px;
+    text-align: center;
+
+    a {
+        margin: 0 10px;
+        font-size: 18px;
+        color: #999;
+        text-decoration: none;
+
+        &.active {
+            color: #1890ff;
+        }
+    }
+`;

@@ -1,6 +1,8 @@
 import { fromJS } from 'immutable';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap, throttleTime } from 'rxjs/operators';
 import { from } from 'rxjs';
+import { ActionsObservable } from 'redux-observable';
+import { AnyAction } from 'redux';
 
 const nameList = ['Installed CLI Package', 'Installed CLI Rely Package'];
 
@@ -13,7 +15,7 @@ export default ({ request }: any) => {
         namespace: 'home',
         // 默认数据
         state: fromJS({
-            packageList: []
+            packageList: [],
         }),
         /**
          *
@@ -22,31 +24,28 @@ export default ({ request }: any) => {
          *
          */
         epics: {
-            getPackageList: (epic$: any) =>
+            getPackageList: (epic$: ActionsObservable<AnyAction>) =>
                 epic$.pipe(
-                    switchMap(() =>
-                        from(serveGetPackageList()).pipe(
-                            map((v: any[]) => ({
-                                type: 'home/setState',
-                                payload: v.map((o: any, i: number) => ({ name: nameList[i], list: o }))
-                            }))
-                        )
-                    )
-                )
+                    switchMap(() => serveGetPackageList()),
+                    map((v: any) => ({
+                        type: 'home/setState',
+                        payload: v.map((o: any, i: number) => ({ name: nameList[i], list: o })),
+                    })),
+                ),
         },
         // effects: {
-        //     *getPackageList(action, { put, call }) {
-        //         const data = yield call(serveGetPackageList)
+        //     *getPackageList(action: any, { put, call }: any) {
+        //         const data = yield call(serveGetPackageList);
         //         if (data) {
         //             yield put({
         //                 type: 'home/setState',
-        //                 payload: data.map((v, i) => ({ name: nameList[i], list: v }))
-        //             })
+        //                 payload: data.map((v: string, i: number) => ({ name: nameList[i], list: v })),
+        //             });
         //         }
-        //     }
+        //     },
         // },
         reducers: {
-            setState: (state: any, { payload }: any) => state.set('packageList', fromJS(payload))
-        }
+            setState: (state: any, { payload }: any) => state.set('packageList', fromJS(payload)),
+        },
     };
 };

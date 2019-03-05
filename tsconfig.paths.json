@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "baseUrl": "./",
+        "paths": {
+            "@a/*": ["src/assets/*"],
+            "@m/*": ["src/models/*"],
+            "@c/*": ["src/components/*"],
+            "@cn/*": ["src/containers/*"],
+            "@s/*": ["src/styles/*"],
+            "@mk/*": ["src/mocks/*"],
+            "@u/*": ["src/utils/*"],
+            "@rw": ["src/serviceWorker.ts"],
+            "@/*": ["src/*"]
+        }
+    }
+}
