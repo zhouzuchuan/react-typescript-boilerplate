@@ -1,7 +1,9 @@
 import React from 'react';
-import { Route, Switch, NavLink } from 'react-router-dom';
+import { Switch, NavLink } from 'react-router-dom';
 import { asyncComponent } from 'react-enhanced';
 import styled from 'styled-components';
+
+import Route from '@c/Route';
 
 export default class App extends React.Component {
     state = {
@@ -29,19 +31,21 @@ export default class App extends React.Component {
             <Route key="body" render={this.routeRender} />,
         ];
     }
-    private routeRender = ({ match }: { match: any }) => (
-        <Switch>
-            <Route
-                component={asyncComponent({
-                    component: () => import('@cn/Home'),
-                    model: () => import('@m/home'),
-                })}
-                exact={true}
-                path="/"
-            />
-            <Route component={asyncComponent(() => import('@cn/About'))} exact={true} path="/about" />
-        </Switch>
-    );
+    private routeRender = ({ match }: { match: any }) => {
+        return (
+            <Switch>
+                <Route
+                    component={asyncComponent({
+                        component: () => import('@cn/Home'),
+                        model: () => import('@m/home'),
+                    })}
+                    exact={true}
+                    path="/"
+                />
+                <Route component={asyncComponent(() => import('@cn/About'))} exact={true} path="/about" />
+            </Switch>
+        );
+    };
 }
 
 const Headerbox = styled.div`

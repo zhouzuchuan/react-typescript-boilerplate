@@ -1,7 +1,7 @@
 import React from 'react';
-import { component } from 'react-enhanced';
+import { components } from 'react-enhanced';
 
-const { Loading } = component;
+const { Loading } = components;
 
 type Tprops = {
     dataSource: any;

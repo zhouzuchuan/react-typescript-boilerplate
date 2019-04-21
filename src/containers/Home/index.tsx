@@ -1,28 +1,32 @@
 import React from 'react';
-import { connect, bindActionCreators } from 'react-enhanced';
+import { bindActionCreators, connect } from 'react-enhanced';
 
 import styled, { keyframes } from 'styled-components';
 
 import Logo from '@c/Logo';
 import List from '@c/List';
 
-type ThocProps = {
-    getPackageList?: any;
-    packageList?: any;
-};
+type ThocProps = Partial<{
+    getPackageList: any;
+    packageList: any;
+}>;
 
 type Tprops = ThocProps;
 
 @connect(
-    ({ home }: any) => ({
-        packageList: home.get('packageList'),
-    }),
+    ({ home }: any) => {
+        return {
+            packageList: home.get('packageList'),
+        };
+    },
     (dispatch: any) =>
         bindActionCreators(
             {
-                getPackageList: () => ({
-                    type: 'home/getPackageList',
-                }),
+                getPackageList: () => {
+                    return {
+                        type: 'home/getPackageList',
+                    };
+                },
             },
             dispatch,
         ),
@@ -30,6 +34,7 @@ type Tprops = ThocProps;
 export default class HomePage extends React.Component<Tprops> {
     render() {
         const { packageList, getPackageList } = this.props;
+
         return (
             <Wrap>
                 <header>
@@ -58,6 +63,7 @@ const logoSpin = keyframes`
     from {
         transform: rotate(0deg);
     }
+
     to {
         transform: rotate(360deg);
     }
@@ -66,30 +72,37 @@ const logoSpin = keyframes`
 const Wrap = styled.div`
     color: #666;
     text-align: center;
+
     header {
-        background-color: #222;
         padding: 20px;
-        img {
-            height: 80px;
-            animation: ${logoSpin} infinite 20s linear;
-        }
+        background-color: #222;
+
         h1 {
             font-size: 1.5em;
             color: #fff;
         }
+
         a {
             color: #fff;
         }
+
+        img {
+            height: 80px;
+            animation: ${logoSpin} infinite 20s linear;
+        }
     }
+
     .link {
         text-decoration: underline;
-        color: #1890ff;
     }
+
     .package-list {
         padding: 10px;
         margin-top: 40px;
+
         ul {
             margin-top: 15px;
+
             li {
                 margin: 10px;
                 font-size: 16px;

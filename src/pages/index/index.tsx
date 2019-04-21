@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { init } from 'react-enhanced';
+import modelRedux from 'model-redux';
+import { init, middlewares } from 'react-enhanced';
+import { Provider } from 'react-redux';
 import { HashRouter as Router } from 'react-router-dom';
 import { LocaleProvider } from 'antd';
 import zhCN from 'antd/lib/locale-provider/zh_CN';
@@ -10,24 +12,35 @@ import apiList from '@/api';
 
 // 重置样式
 import 'normalize.css';
-import '@s/commonly.less';
+import 'css.preset';
 
-const { Provider } = init({
-    warehouse: [], // 仓库名
-    resultLimit: 'result',
-    api: {
-        // 指定api挂载的仓库名
-        name: '$service',
-        list: apiList,
+const { store, registerModel } = modelRedux.create({
+    middlewares: [
+        [
+            middlewares.requestMiddleware.bind(null, {
+                requestCallback: (req: any) => true,
+                resultLimit: 'result',
+            }),
+        ],
+    ],
+} as any);
+
+init(
+    { store, registerModel },
+    {
+        warehouse: [], // 仓库名
+        api: {
+            // 指定api挂载的仓库名
+            name: '$service',
+            list: apiList,
+        },
     },
-});
-
-console.log('sssss');
+);
 
 const rootEl = document.getElementById('root') as HTMLElement;
 const render = (Wrap: any) => {
     ReactDOM.render(
-        <Provider>
+        <Provider store={store}>
             <Router>
                 <LocaleProvider locale={zhCN}>
                     <Wrap />
