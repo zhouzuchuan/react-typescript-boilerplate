@@ -1,5 +1,6 @@
 import React from 'react';
 import { bindActionCreators, connect } from 'react-enhanced';
+import { isRecord } from 'immutable';
 
 import styled, { keyframes } from 'styled-components';
 

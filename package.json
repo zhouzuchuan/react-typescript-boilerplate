@@ -1,6 +1,6 @@
 {
     "name": "react-typescript-boilerplate",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "private": true,
     "homepage": ".",
     "dependencies": {
@@ -9,7 +9,6 @@
         "@types/react-dom": "16.8.2",
         "@types/react-helmet": "^5.0.8",
         "@types/react-intl": "^2.3.17",
-        "@types/react-redux": "^7.0.8",
         "@types/react-router-dom": "^4.3.1",
         "@types/redux-persist": "^4.3.1",
         "@types/reselect": "^2.2.0",
@@ -23,10 +22,11 @@
         "normalize.css": "^8.0.1",
         "react": "^16.8.3",
         "react-dom": "^16.8.3",
-        "react-enhanced": "^2.0.1",
+        "react-enhanced": "^2.0.4",
         "react-helmet": "^5.2.0",
         "react-intl": "^2.8.0",
         "react-router-dom": "^4.3.1",
+        "redux-immutable": "^4.0.0",
         "redux-persist": "^5.10.0",
         "reselect": "^4.0.0",
         "styled-components": "^4.1.3"

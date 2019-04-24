@@ -1,4 +1,5 @@
-import { fromJS } from 'immutable';
+import { hooks } from 'react-enhanced';
+import { fromJS, Record, List, Map } from 'immutable';
 import { map, switchMap, throttleTime } from 'rxjs/operators';
 import { from } from 'rxjs';
 import { ActionsObservable } from 'redux-observable';
@@ -6,15 +7,16 @@ import { AnyAction } from 'redux';
 
 const nameList = ['Installed CLI Package', 'Installed CLI Rely Package'];
 
-export default ({ request }: any) => {
+export default () => {
     // 获取通过request包装后的api服务
-    const { serveGetPackageList } = request('$service', 'serveGetPackageList');
+    const { serveGetPackageList } = hooks.useRequest();
 
     return {
         // model 名称
         namespace: 'home',
+
         // 默认数据
-        state: fromJS({
+        state: Map({
             packageList: [],
         }),
         /**
@@ -29,7 +31,9 @@ export default ({ request }: any) => {
                     switchMap(() => serveGetPackageList()),
                     map((v: any) => ({
                         type: 'home/setState',
-                        payload: v.map((o: any, i: number) => ({ name: nameList[i], list: o })),
+                        payload: {
+                            packageList: fromJS(v.map((o: any, i: number) => ({ name: nameList[i], list: o }))),
+                        },
                     })),
                 ),
         },
@@ -45,7 +49,11 @@ export default ({ request }: any) => {
         //     },
         // },
         reducers: {
-            setState: (state: any, { payload }: any) => state.set('packageList', fromJS(payload)),
+            setState: (state: Record<any>, action: AnyAction) =>
+                Object.entries(action.payload || {}).reduce(
+                    (r, [k, v]: any[]) => r.setIn(k.split('.'), fromJS(v)),
+                    state,
+                ),
         },
     };
 };
