@@ -1,21 +1,9 @@
 import React from 'react';
-import { Switch, NavLink } from 'react-router-dom';
+import { Switch, NavLink, Route } from 'react-router-dom';
 import { asyncComponent } from 'react-enhanced';
 import styled from 'styled-components';
 
-import Route from '@c/Route';
-import { resolve } from 'url';
-
-// console.log(() => import('@cn/Home'));
-// console.log(,
-// );
-
-// new Promise((resolve, reject) => {
-//     Promise.all([(() => import('@cn/Home'))(), (() => import('@m/home'))()]).then(([component, model]) => {
-//         console.log(model);
-//         resolve(component);
-//     });
-// });
+// import Route from '@c/Route';
 
 export default class App extends React.Component {
     state = {

@@ -1,25 +1,22 @@
 import React from 'react';
 import { bindActionCreators, connect } from 'react-enhanced';
-import { isRecord } from 'immutable';
-
 import styled, { keyframes } from 'styled-components';
 
 import Logo from '@c/Logo';
 import List from '@c/List';
 
 type ThocProps = Partial<{
-    getPackageList: any;
-    packageList: any;
+    getPackageList: any,
+    packageList: any,
 }>;
 
 type Tprops = ThocProps;
 
+export default
 @connect(
-    ({ home }: any) => {
-        return {
-            packageList: home.get('packageList'),
-        };
-    },
+    ({ home }: any) => ({
+        packageList: home.get('packageList'),
+    }),
     (dispatch: any) =>
         bindActionCreators(
             {
@@ -32,7 +29,7 @@ type Tprops = ThocProps;
             dispatch,
         ),
 )
-export default class HomePage extends React.Component<Tprops> {
+class HomePage extends React.Component<Tprops> {
     render() {
         const { packageList, getPackageList } = this.props;
 
@@ -44,9 +41,14 @@ export default class HomePage extends React.Component<Tprops> {
                 </header>
 
                 <p className="mt30 pt20">
-                    For guide and recipes on how to configure / customize this project, check out the
-                    <a className="link" href="https://github.com/zhouzuchuan/react-enhanced-cli" target="_blank">
-                        react-enhanced-cli
+                    For guide and recipes on how to configure / customize this project, check out the{' '}
+                    <a
+                        className="link"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                        href="https://github.com/zhouzuchuan/project-boilerplates"
+                    >
+                        project-boilerplates
                     </a>
                 </p>
 

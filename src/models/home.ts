@@ -16,7 +16,7 @@ export default () => {
         namespace: 'home',
 
         // 默认数据
-        state: Map({
+        state: fromJS({
             packageList: [],
         }),
         /**
@@ -49,7 +49,7 @@ export default () => {
         //     },
         // },
         reducers: {
-            setState: (state: Record<any>, action: AnyAction) =>
+            setState: (state: Record<any, any>, action: AnyAction) =>
                 Object.entries(action.payload || {}).reduce(
                     (r, [k, v]: any[]) => r.setIn(k.split('.'), fromJS(v)),
                     state,
