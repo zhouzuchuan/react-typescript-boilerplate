@@ -1,8 +1,7 @@
 import { hooks } from 'react-enhanced';
-import { fromJS, Record, List, Map } from 'immutable';
-import { map, switchMap, throttleTime } from 'rxjs/operators';
-import { from } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 import { ActionsObservable } from 'redux-observable';
+import { fromJS, Record } from 'immutable';
 import { AnyAction } from 'redux';
 
 const nameList = ['Installed CLI Package', 'Installed CLI Rely Package'];
@@ -49,7 +48,7 @@ export default () => {
         //     },
         // },
         reducers: {
-            setState: (state: Record<any, any>, action: AnyAction) =>
+            setState: (state: Record<any>, action: AnyAction) =>
                 Object.entries(action.payload || {}).reduce(
                     (r, [k, v]: any[]) => r.setIn(k.split('.'), fromJS(v)),
                     state,

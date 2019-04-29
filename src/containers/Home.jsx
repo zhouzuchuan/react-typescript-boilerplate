@@ -1,5 +1,6 @@
 import React from 'react';
-import { bindActionCreators, connect } from 'react-enhanced';
+import { Dispatch } from 'redux';
+import { connect, hooks } from 'react-enhanced';
 import styled, { keyframes } from 'styled-components';
 
 import Logo from '@c/Logo';
@@ -12,55 +13,41 @@ type ThocProps = Partial<{
 
 type Tprops = ThocProps;
 
-export default
-@connect(
+const HomePage = ({ packageList, getPackageList }: Tprops) => (
+    <Wrap>
+        <header>
+            <Logo />
+            <h1 className="mt10">Welcome to React</h1>
+        </header>
+
+        <p className="mt30 pt20">
+            For guide and recipes on how to configure / customize this project, check out the{' '}
+            <a
+                className="link"
+                rel="noopener noreferrer"
+                target="_blank"
+                href="https://github.com/zhouzuchuan/project-boilerplates"
+            >
+                project-boilerplates
+            </a>
+        </p>
+
+        <p className="mt30">
+            To get started, edit <code>src/pages/index/App.js</code> and save to reload.
+        </p>
+
+        <List dataSource={packageList} startAction={getPackageList} />
+    </Wrap>
+);
+
+export default connect(
     ({ home }: any) => ({
         packageList: home.get('packageList'),
     }),
-    (dispatch: any) =>
-        bindActionCreators(
-            {
-                getPackageList: () => {
-                    return {
-                        type: 'home/getPackageList',
-                    };
-                },
-            },
-            dispatch,
-        ),
-)
-class HomePage extends React.Component<Tprops> {
-    render() {
-        const { packageList, getPackageList } = this.props;
-
-        return (
-            <Wrap>
-                <header>
-                    <Logo />
-                    <h1 className="mt10">Welcome to React</h1>
-                </header>
-
-                <p className="mt30 pt20">
-                    For guide and recipes on how to configure / customize this project, check out the{' '}
-                    <a
-                        className="link"
-                        rel="noopener noreferrer"
-                        target="_blank"
-                        href="https://github.com/zhouzuchuan/project-boilerplates"
-                    >
-                        project-boilerplates
-                    </a>
-                </p>
-
-                <p className="mt30">
-                    To get started, edit <code>src/pages/index/App.js</code> and save to reload.
-                </p>
-
-                <List dataSource={packageList} startAction={getPackageList} />
-            </Wrap>
-        );
-    }
-}
+    (dispatch: Dispatch) => ({
+        getPackageList: hooks.useAction('home/getPackageList'),
+    }),
+)(HomePage);
 
 const logoSpin = keyframes`
     from {

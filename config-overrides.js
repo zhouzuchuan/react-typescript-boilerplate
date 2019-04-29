@@ -24,7 +24,7 @@ function resolve(dir) {
  * 2/其他: 全部开启
  *
  * */
-const lintSwitch = 0;
+const lintSwitch = 1;
 
 const { analyze = '0' } = process.env;
 

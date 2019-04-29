@@ -1,52 +1,53 @@
 import React from 'react';
-import { Switch, NavLink, Route } from 'react-router-dom';
-import { asyncComponent } from 'react-enhanced';
+import { Switch, NavLink } from 'react-router-dom';
+import { asyncComponent, components } from 'react-enhanced';
 import styled from 'styled-components';
 
-// import Route from '@c/Route';
+const { Route } = components;
 
-export default class App extends React.Component {
-    state = {
-        menuData: [
-            {
-                name: 'Home',
-                path: '/',
-            },
-            {
-                name: 'About',
-                path: '/about',
-            },
-        ],
-    };
-    render() {
-        const { menuData } = this.state;
-        return [
-            <Headerbox key="header">
-                {menuData.map(({ name, path }) => (
+const menuData = [
+    {
+        name: 'Home',
+        path: '/',
+    },
+    {
+        name: 'About',
+        path: '/about',
+    },
+];
+
+const routeRender = () => (
+    <Switch>
+        <Route
+            component={asyncComponent({
+                component: () => import('@cn/Home'),
+                model: () => import('@m/home'),
+            })}
+            exact={true}
+            path="/"
+        />
+        <Route component={asyncComponent(() => import('@cn/About'))} exact={true} path="/about" />
+    </Switch>
+);
+
+const App = () => {
+    return (
+        <div className="flex-box vertical">
+            <Headerbox>
+                {menuData.map(({ name, path }: any) => (
                     <NavLink activeClassName="active" exact={true} key={name} strict={true} to={path}>
                         {name}
                     </NavLink>
                 ))}
-            </Headerbox>,
-            <Route key="body" render={this.routeRender} />,
-        ];
-    }
-    private routeRender = ({ match }: { match: any }) => {
-        return (
-            <Switch>
-                <Route
-                    component={asyncComponent({
-                        component: () => import('@cn/Home'),
-                        model: () => import('@m/home'),
-                    })}
-                    exact={true}
-                    path="/"
-                />
-                <Route component={asyncComponent(() => import('@cn/About'))} exact={true} path="/about" />
-            </Switch>
-        );
-    };
-}
+            </Headerbox>
+            <div className="item">
+                <Route render={routeRender} />
+            </div>
+        </div>
+    );
+};
+
+export default App;
 
 const Headerbox = styled.div`
     padding: 30px;
