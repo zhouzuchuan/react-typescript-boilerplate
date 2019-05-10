@@ -16,8 +16,6 @@ import '@s/index.less';
 const { Provider } = init({
     warehouse: [], // 仓库名
     api: {
-        // 指定api挂载的仓库名
-        name: '$service',
         list: apiList,
     },
     // 路由守卫（必须使用components.Route组件）

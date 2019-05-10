@@ -48,7 +48,7 @@ module.exports = {
             return config;
         },
         config => {
-            config.plugins.push(new LodashModuleReplacementPlugin());
+            config.plugins.push(new LodashModuleReplacementPlugin({ paths: true }));
             return config;
         },
         fixBabelImports('lodash', {}),
