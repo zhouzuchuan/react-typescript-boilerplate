@@ -51,7 +51,6 @@ module.exports = {
             config.plugins.push(new LodashModuleReplacementPlugin({ paths: true }));
             return config;
         },
-        fixBabelImports('lodash', {}),
         fixBabelImports('import', { libraryName: 'antd', libraryDirectory: 'es', style: 'css' }),
         addLessLoader({
             javascriptEnabled: true,
