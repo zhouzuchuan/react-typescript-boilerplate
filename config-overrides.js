@@ -36,8 +36,17 @@ module.exports = {
             return config;
         },
         config => {
+            // config.plugins = config.plugins.filter(v => {
+            //     if (v.options) {
+            //         console.log(v.options, '========');
+            //     }
+            //     return !(v.options || {}).tsconfig;
+            // });
+
+            // console.log(sss);
+
             if (lintSwitch === 0 || (lintSwitch === 1 && config.mode === 'development')) {
-                config.plugins = config.plugins.filter(v => !(v.options || {}).tsconfig);
+                // config.plugins = config.plugins.filter(v => !(v.options || {}).tsconfig);
             } else {
                 config.plugins.push(
                     new StyleLintPlugin({

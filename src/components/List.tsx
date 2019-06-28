@@ -9,6 +9,8 @@ type Tprops = {
 const List = (props: Tprops) => {
     useEffect(() => {
         props.startAction();
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
@@ -20,7 +22,7 @@ const List = (props: Tprops) => {
                         <ul className="lay-list">
                             {item.get('list').map((v: any, i: number) => (
                                 <li key={i}>
-                                    <a className="link" href={v.get('src')} target="_blank">
+                                    <a rel="noopener noreferrer" className="link" href={v.get('src')} target="_blank">
                                         {v.get('name')}
                                     </a>
                                 </li>
