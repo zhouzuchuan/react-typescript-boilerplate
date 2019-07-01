@@ -10,6 +10,7 @@ const path = require('path');
 const { bindServer } = require('data-mock');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
+const glob = require('glob');
 
 function resolve(dir) {
     return path.join(__dirname, dir);
@@ -31,23 +32,17 @@ const { analyze = '0' } = process.env;
 module.exports = {
     webpack: override(
         config => {
-            const size = config.entry.length;
-            config.entry.splice(size - 1, 1, path.resolve(__dirname, './src/pages/index/index.tsx'));
+            config.entry = glob.sync(path.resolve(__dirname, 'src/pages/*')).reduce(
+                (r, p) => ({
+                    ...r,
+                    [p.split('/').reverse()[0]]: [...config.entry.slice(0, -1), path.resolve(p, 'index.tsx')],
+                }),
+                {},
+            );
             return config;
         },
         config => {
-            // config.plugins = config.plugins.filter(v => {
-            //     if (v.options) {
-            //         console.log(v.options, '========');
-            //     }
-            //     return !(v.options || {}).tsconfig;
-            // });
-
-            // console.log(sss);
-
-            if (lintSwitch === 0 || (lintSwitch === 1 && config.mode === 'development')) {
-                // config.plugins = config.plugins.filter(v => !(v.options || {}).tsconfig);
-            } else {
+            if (!(lintSwitch === 0 || (lintSwitch === 1 && config.mode === 'development'))) {
                 config.plugins.push(
                     new StyleLintPlugin({
                         files: ['src/**/*.?(le|c)ss'],
@@ -63,7 +58,9 @@ module.exports = {
         fixBabelImports('import', { libraryName: 'antd', libraryDirectory: 'es', style: 'css' }),
         addLessLoader({
             javascriptEnabled: true,
-            modifyVars: { '@primary-color': '#1DA57A' },
+            modifyVars: {
+                /*'@primary-color': '#1DA57A'*/
+            },
         }),
         addBundleVisualizer(
             {
