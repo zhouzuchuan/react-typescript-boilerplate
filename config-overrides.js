@@ -50,6 +50,7 @@ module.exports = {
     webpack: override(
         (config, env) => {
             const isProd = env === 'production';
+            const isLint = !(lintSwitch === 0 || (lintSwitch === 1 && config.mode === 'development'));
 
             const entries = globby.sync([resolveApp('src/pages') + '/*/index.tsx'], { cwd: process.cwd() }).reduce(
                 (r, filePath) => ({
@@ -106,6 +107,10 @@ module.exports = {
             config.plugins.forEach((item, i) => {
                 const strConstructor = item.constructor.toString();
 
+                if (!isLint && strConstructor.indexOf('class ForkTsCheckerWebpackPlugin') > -1) {
+                    item.ignoreLintWarnings = true;
+                }
+
                 if (isProd) {
                     // 更改输出的样式文件名
                     if (strConstructor.indexOf('class MiniCssExtractPlugin') > -1) {
@@ -126,7 +131,7 @@ module.exports = {
                 }
             });
 
-            // ddd;
+            // dd;
 
             // 更改输出的文件名
             if (isProd) {
@@ -141,6 +146,17 @@ module.exports = {
             config.entry = entries;
 
             config.plugins.push(...htmlPlugin);
+
+            if (isLint) {
+                // 配置stylelint
+                config.plugins.push(
+                    new StyleLintPlugin({
+                        files: ['src/**/*.?(le|c)ss'],
+                    }),
+                );
+            }
+            // 配置 lodash 树摇
+            config.plugins.push(new LodashModuleReplacementPlugin({ paths: true }));
 
             // 修改代码拆分规则，详见 webpack 文档：https://webpack.js.org/plugins/split-chunks-plugin/#optimization-splitchunks
             config.optimization = {
@@ -159,20 +175,6 @@ module.exports = {
                 },
             };
 
-            return config;
-        },
-        config => {
-            if (!(lintSwitch === 0 || (lintSwitch === 1 && config.mode === 'development'))) {
-                config.plugins.push(
-                    new StyleLintPlugin({
-                        files: ['src/**/*.?(le|c)ss'],
-                    }),
-                );
-            }
-            return config;
-        },
-        config => {
-            config.plugins.push(new LodashModuleReplacementPlugin({ paths: true }));
             return config;
         },
         fixBabelImports('import', { libraryName: 'antd', libraryDirectory: 'es', style: 'css' }),
