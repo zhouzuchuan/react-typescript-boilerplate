@@ -18,6 +18,7 @@ export default () => {
         state: fromJS({
             packageList: [],
         }),
+
         /**
          *
          * 这里的副作用分别通过 redux-observable 的 epics 和 redux-saga 的 effects 来实现

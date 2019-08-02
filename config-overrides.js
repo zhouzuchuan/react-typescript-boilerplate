@@ -9,7 +9,7 @@ const {
 const { paths } = require('react-app-rewired');
 const path = require('path');
 const fs = require('fs');
-const { bindServer } = require('data-mock');
+const DataMock = require('data-mock');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -207,8 +207,7 @@ module.exports = {
     devServer: configFn => (proxy, allowedHost) => {
         const config = configFn(proxy, allowedHost);
         config.after = server => {
-            bindServer({
-                server,
+            new DataMock(server, {
                 target: path.resolve(__dirname, './src/mocks/'),
                 watchTarget: path.resolve(__dirname, './src/api/'),
             });
