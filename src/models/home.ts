@@ -21,8 +21,8 @@ export default () => {
 
         /**
          *
-         * 这里的副作用分别通过 redux-observable 的 epics 和 redux-saga 的 effects 来实现
-         * 根据习惯 选择其中之一即可，个人建议采用epics来组织副作用，因为它是基于rxjs响应式编程实现，对于复杂的异步交互更加得心应手，但是其学习门槛比较高，谨慎选择
+         * 这里的副作用分别通过 redux-observable 的 epics 和 redux-saga 的 sagas 来实现
+         * 根据习惯 选择其中之一即可，个人建议采用epics来组织副作用，因为它是基于rxjs响应式编程实现，对于复杂的异步交互更加得心应手，但是其学习门槛比较高，请根据真实业务权衡选择
          *
          */
         epics: {
@@ -30,20 +30,22 @@ export default () => {
                 epic$.pipe(
                     switchMap(() => serveGetPackageList()),
                     map((v: any) => ({
-                        type: 'home/setState',
+                        type: 'setState',
                         payload: {
                             packageList: fromJS(v.map((o: any, i: number) => ({ name: nameList[i], list: o }))),
                         },
                     })),
                 ),
         },
-        // effects: {
+        // sagas: {
         //     *getPackageList(action: any, { put, call }: any) {
         //         const data = yield call(serveGetPackageList);
         //         if (data) {
         //             yield put({
-        //                 type: 'home/setState',
-        //                 payload: data.map((v: string, i: number) => ({ name: nameList[i], list: v })),
+        //                 type: 'setState',
+        //                 payload: {
+        //                     packageList: data.map((v: string, i: number) => ({ name: nameList[i], list: v })),
+        //                 },
         //             });
         //         }
         //     },

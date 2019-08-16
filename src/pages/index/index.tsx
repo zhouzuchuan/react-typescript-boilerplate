@@ -7,6 +7,8 @@ import zhCN from 'antd/lib/locale-provider/zh_CN';
 import * as serviceWorker from '@rw';
 import App from './App';
 import apiList from '@/api';
+import sagas from 'model-redux/lib/effects/sagas';
+import epics from 'model-redux/lib/effects/epics';
 
 // 重置样式
 import 'normalize.css';
@@ -29,6 +31,7 @@ const { Provider } = init({
                 }),
             ],
         ],
+        effects: [sagas('sagas'), epics('epics')],
     },
 });
 
