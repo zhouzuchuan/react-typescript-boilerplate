@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { init, middlewares } from 'react-enhanced';
 import { BrowserRouter as Router, RouteProps } from 'react-router-dom';
-import { LocaleProvider } from 'antd';
+import { ConfigProvider } from 'antd';
 import zhCN from 'antd/lib/locale-provider/zh_CN';
 import * as serviceWorker from '@rw';
 import App from './App';
@@ -40,9 +40,9 @@ const render = (Wrap: any) => {
     ReactDOM.render(
         <Provider>
             <Router>
-                <LocaleProvider locale={zhCN}>
+                <ConfigProvider locale={zhCN}>
                     <Wrap />
-                </LocaleProvider>
+                </ConfigProvider>
             </Router>
         </Provider>,
         rootEl,
