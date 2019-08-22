@@ -1,17 +1,17 @@
-import React from 'react';
-import { Dispatch } from 'redux';
-import { connect, hooks } from 'react-enhanced';
-import styled, { keyframes } from 'styled-components';
+import React from 'react'
+import { Dispatch } from 'redux'
+import { connect, hooks } from 'react-enhanced'
+import styled, { keyframes } from 'styled-components'
 
-import Logo from '@c/Logo';
-import List from '@c/List';
+import Logo from '@c/Logo'
+import List from '@c/List'
 
 type ThocProps = Partial<{
-    getPackageList: any,
-    packageList: any,
-}>;
+    getPackageList: any
+    packageList: any
+}>
 
-type Tprops = ThocProps;
+type Tprops = ThocProps
 
 const HomePage = ({ packageList, getPackageList }: Tprops) => (
     <Wrap>
@@ -21,7 +21,8 @@ const HomePage = ({ packageList, getPackageList }: Tprops) => (
         </header>
 
         <p className="mt30 pt20">
-            For guide and recipes on how to configure / customize this project, check out the{' '}
+            For guide and recipes on how to configure / customize this project,
+            check out the{' '}
             <a
                 className="link"
                 rel="noopener noreferrer"
@@ -33,12 +34,13 @@ const HomePage = ({ packageList, getPackageList }: Tprops) => (
         </p>
 
         <p className="mt30">
-            To get started, edit <code>src/pages/index/App.js</code> and save to reload.
+            To get started, edit <code>src/pages/index/App.js</code> and save to
+            reload.
         </p>
 
         <List dataSource={packageList} startAction={getPackageList} />
     </Wrap>
-);
+)
 
 export default connect(
     ({ home }: any) => ({
@@ -47,7 +49,7 @@ export default connect(
     (dispatch: Dispatch) => ({
         getPackageList: hooks.useAction('home/getPackageList'),
     }),
-)(HomePage);
+)(HomePage)
 
 const logoSpin = keyframes`
     from {
@@ -57,7 +59,7 @@ const logoSpin = keyframes`
     to {
         transform: rotate(360deg);
     }
-`;
+`
 
 const Wrap = styled.div`
     color: #666;
@@ -99,4 +101,4 @@ const Wrap = styled.div`
             }
         }
     }
-`;
+`

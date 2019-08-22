@@ -1,7 +1,7 @@
-import React from 'react';
+import React from 'react'
 
-import logo from '@a/logo.svg';
+import logo from '@a/logo.svg'
 
-const Logo: React.SFC = () => <img alt="logo" src={logo} />;
+const Logo: React.FC = () => <img alt="logo" src={logo} />
 
-export default Logo;
+export default Logo

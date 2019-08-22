@@ -1,20 +1,18 @@
-import React, { useEffect } from 'react';
-import { components as Component } from 'react-enhanced';
+import React, { useEffect } from 'react'
+import { components as C } from 'react-enhanced'
 
 type Tprops = {
-    dataSource: any;
-    startAction: any;
-};
+    dataSource: any
+    startAction: any
+}
 
 const List = (props: Tprops) => {
     useEffect(() => {
-        props.startAction();
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+        props.startAction()
+    }, [])
 
     return (
-        <Component.Loading className="mt30" include="serveGetPackageList">
+        <C.Loading className="mt30" include="serveGetPackageList">
             {props.dataSource.map((item: any, index: number) => {
                 return (
                     <div className="package-list" key={index}>
@@ -22,17 +20,22 @@ const List = (props: Tprops) => {
                         <ul className="lay-list">
                             {item.get('list').map((v: any, i: number) => (
                                 <li key={i}>
-                                    <a rel="noopener noreferrer" className="link" href={v.get('src')} target="_blank">
+                                    <a
+                                        rel="noopener noreferrer"
+                                        className="link"
+                                        href={v.get('src')}
+                                        target="_blank"
+                                    >
                                         {v.get('name')}
                                     </a>
                                 </li>
                             ))}
                         </ul>
                     </div>
-                );
+                )
             })}
-        </Component.Loading>
-    );
-};
+        </C.Loading>
+    )
+}
 
-export default List;
+export default List

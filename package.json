@@ -50,7 +50,10 @@
         ]
     },
     "eslintConfig": {
-        "extends": "react-app"
+        "extends": "react-app",
+        "plugins": [
+            "prettier"
+        ]
     },
     "browserslist": {
         "production": [

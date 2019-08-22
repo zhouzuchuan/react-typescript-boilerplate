@@ -1,14 +1,14 @@
-import { hooks } from 'react-enhanced';
-import { map, switchMap } from 'rxjs/operators';
-import { ActionsObservable } from 'redux-observable';
-import { fromJS, Record } from 'immutable';
-import { AnyAction } from 'redux';
+import { hooks } from 'react-enhanced'
+import { map, switchMap } from 'rxjs/operators'
+import { ActionsObservable } from 'redux-observable'
+import { fromJS, Record } from 'immutable'
+import { AnyAction } from 'redux'
 
-const nameList = ['Installed CLI Package', 'Installed CLI Rely Package'];
+const nameList = ['Installed CLI Package', 'Installed CLI Rely Package']
 
 export default () => {
     // 获取通过request包装后的api服务
-    const { serveGetPackageList } = hooks.useRequest();
+    const { serveGetPackageList } = hooks.useRequest()
 
     return {
         // model 名称
@@ -32,11 +32,30 @@ export default () => {
                     map((v: any) => ({
                         type: 'setState',
                         payload: {
-                            packageList: fromJS(v.map((o: any, i: number) => ({ name: nameList[i], list: o }))),
+                            packageList: fromJS(
+                                v.map((o: any, i: number) => ({
+                                    name: nameList[i],
+                                    list: o,
+                                })),
+                            ),
                         },
                     })),
                 ),
         },
+
+        /**
+         *
+         * 如果使用 redux-saga 则需要在 pages/index/index.tsx 中 修改 react-enhanced init options modelConfig 如下
+         * 
+            modelConfig: { 
+                // ...
+                effects: [sagas('sagas')],
+            },
+         * 
+         * 具体可以参考  https://github.com/zhouzuchuan/model-redux/tree/dev#create
+         * 
+         */
+
         // sagas: {
         //     *getPackageList(action: any, { put, call }: any) {
         //         const data = yield call(serveGetPackageList);
@@ -57,5 +76,5 @@ export default () => {
                     state,
                 ),
         },
-    };
-};
+    }
+}

@@ -1,27 +1,31 @@
-const path = require('path');
-const glob = require('glob');
-const _ = require('lodash');
-const tsConfigPaths = require('./tsconfig.paths.json');
+const path = require('path')
+const glob = require('glob')
+const _ = require('lodash')
+const tsConfigPaths = require('./tsconfig.paths.json')
 
 const alias = _.reduce(
     tsConfigPaths.compilerOptions.paths,
     (r, v, k) => {
         return {
             ...r,
-            [k.replace('/*', '')]: path.resolve(__dirname, _.first(v).replace('*', '')),
-        };
+            [k.replace('/*', '')]: path.resolve(
+                __dirname,
+                _.first(v).replace('*', ''),
+            ),
+        }
     },
     {},
-);
- 
+)
 
 module.exports = {
     title: 'react-typescript-boilerplate',
 
     components: function() {
-        return glob.sync(path.resolve(__dirname, 'src/components/**/*.tsx')).filter(function(module) {
-            return /\/[A-Z]\w*\.tsx$/.test(module);
-        });
+        return glob
+            .sync(path.resolve(__dirname, 'src/components/**/*.tsx'))
+            .filter(function(module) {
+                return /\/[A-Z]\w*\.tsx$/.test(module)
+            })
     },
     // 定义props和方法选项卡的初始状态
     usageMode: 'expand',
@@ -44,6 +48,7 @@ module.exports = {
     },
 
     // resolver: require('react-docgen').resolver.findAllComponentDefinitions,
-    propsParser: require('react-docgen-typescript').withDefaultConfig({ propFilter: { skipPropsWithoutDoc: true } })
-        .parse,
-};
+    propsParser: require('react-docgen-typescript').withDefaultConfig({
+        propFilter: { skipPropsWithoutDoc: true },
+    }).parse,
+}
