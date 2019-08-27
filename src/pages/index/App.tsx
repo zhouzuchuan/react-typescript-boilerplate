@@ -1,9 +1,7 @@
 import React from 'react'
 import { Switch, NavLink } from 'react-router-dom'
-import { asyncComponent, components } from 'react-enhanced'
+import { asyncComponent, components as C } from 'react-enhanced'
 import styled from 'styled-components'
-
-const { Route } = components
 
 const menuData = [
     {
@@ -18,7 +16,7 @@ const menuData = [
 
 const routeRender = () => (
     <Switch>
-        <Route
+        <C.Route
             component={asyncComponent({
                 component: () => import('@cn/Home'),
                 model: () => import('@m/home'),
@@ -26,7 +24,7 @@ const routeRender = () => (
             exact={true}
             path="/"
         />
-        <Route
+        <C.Route
             component={asyncComponent(() => import('@cn/About'))}
             exact={true}
             path="/about"
@@ -51,7 +49,7 @@ const App = () => {
                 ))}
             </Headerbox>
             <div className="item">
-                <Route render={routeRender} />
+                <C.Route render={routeRender} />
             </div>
         </div>
     )

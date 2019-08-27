@@ -9,6 +9,8 @@ type Tprops = {
 const List = (props: Tprops) => {
     useEffect(() => {
         props.startAction()
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (
