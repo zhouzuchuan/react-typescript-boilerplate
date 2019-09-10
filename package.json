@@ -1,6 +1,6 @@
 {
     "name": "react-typescript-boilerplate",
-    "version": "0.4.0",
+    "version": "0.4.1",
     "private": true,
     "dependencies": {
         "@types/jest": "24.0.17",
@@ -21,7 +21,7 @@
         "ramda": "^0.26.1",
         "react": "^16.9.0",
         "react-dom": "^16.9.0",
-        "react-enhanced": "^2.1.4",
+        "react-enhanced": "^2.2.0",
         "react-helmet": "^5.2.1",
         "react-intl": "^3.1.8",
         "react-router-dom": "^5.0.1",
