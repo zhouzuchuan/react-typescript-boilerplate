@@ -23,7 +23,6 @@
     "src"
   ],
   "exclude": [
-    "src/react-enhanced.js",
     "src/**/*.js"
   ],
   "extends": "./tsconfig.paths.json"

@@ -4,7 +4,6 @@ const {
     addWebpackAlias,
     addLessLoader,
     addDecoratorsLegacy,
-    addBundleVisualizer,
 } = require('customize-cra')
 const { paths } = require('react-app-rewired')
 const path = require('path')
@@ -23,15 +22,15 @@ function resolve(dir) {
     return path.join(__dirname, dir)
 }
 
-function recursiveIssuer(m) {
-    if (m.issuer) {
-        return recursiveIssuer(m.issuer)
-    } else if (m.name) {
-        return m.name
-    } else {
-        return false
-    }
-}
+// function recursiveIssuer(m) {
+//     if (m.issuer) {
+//         return recursiveIssuer(m.issuer)
+//     } else if (m.name) {
+//         return m.name
+//     } else {
+//         return false
+//     }
+// }
 
 /**
  *
@@ -44,8 +43,6 @@ function recursiveIssuer(m) {
  * */
 const lintSwitch = 1
 
-const { analyze = '0' } = process.env
-
 module.exports = {
     webpack: override(
         (config, env) => {
@@ -54,69 +51,6 @@ module.exports = {
                 lintSwitch === 0 ||
                 (lintSwitch === 1 && config.mode === 'development')
             )
-
-            const entries = globby
-                .sync([resolveApp('src/pages') + '/*/index.tsx'], {
-                    cwd: process.cwd(),
-                })
-                .reduce(
-                    (r, filePath) => ({
-                        ...r,
-                        [filePath.split('/').slice(-2, -1)[0]]: [
-                            require.resolve('react-app-polyfill/stable'),
-                            ...(!isProd
-                                ? [
-                                      require.resolve(
-                                          'react-dev-utils/webpackHotDevClient',
-                                      ),
-                                  ]
-                                : []),
-                            filePath,
-                        ],
-                    }),
-                    {},
-                )
-
-            let styleCacheGroups = {}
-
-            // 配置 HtmlWebpackPlugin 插件, 指定入口文件生成对应的 html 文件
-            const htmlPlugin = Object.keys(entries).map(item => {
-                // 将 css|less 文件合并成一个文件, mini-css-extract-plugin 的用法请参见文档：https://www.npmjs.com/package/mini-css-extract-plugin
-                // MiniCssExtractPlugin 会将动态 import 引入的模块的样式文件也分离出去，将这些样式文件合并成一个文件可以提高渲染速度
-                const styleName = `${item}Styles`
-                styleCacheGroups = {
-                    ...styleCacheGroups,
-                    [styleName]: {
-                        name: styleName,
-                        test: (m, c, entry = styleName) =>
-                            m.constructor.name === 'CssModule' &&
-                            recursiveIssuer(m) === entry,
-                        chunks: 'all', // merge all the css chunk to one file
-                        enforce: true,
-                    },
-                }
-
-                return new HtmlWebpackPlugin({
-                    inject: true,
-                    template: paths.appHtml,
-                    filename: item + '.html',
-                    chunks: [item],
-                    ...(isProd && {
-                        minify: {
-                            removeComments: true,
-                            collapseWhitespace: true,
-                            removeRedundantAttributes: true,
-                            useShortDoctype: true,
-                            removeEmptyAttributes: true,
-                            removeStyleLinkTypeAttributes: true,
-                            keepClosingSlash: true,
-                            minifyJS: true,
-                            minifyCSS: true,
-                            minifyURLs: true,
-                        },
-                    }),
-                })
-            })
 
             config.plugins.forEach((item, i) => {
                 const strConstructor = item.constructor.toString()
@@ -148,13 +82,11 @@ module.exports = {
                     // }
                 }
 
-                // 修改 HtmlWebpackPlugin 插件
+                // 删除默认 HtmlWebpackPlugin 插件
                 if (strConstructor.indexOf('class HtmlWebpackPlugin') > -1) {
                     config.plugins.splice(i, 1)
                 }
             })
-
-            // dd;
 
             // 更改输出的文件名
             if (isProd) {
@@ -166,10 +98,72 @@ module.exports = {
                 config.output.chunkFilename = 'static/js/[name].chunk.js'
             }
 
-            // 修改入口
-            config.entry = entries
+            const newEntry = {}
+            // const styleCacheGroups = {}
 
-            config.plugins.push(...htmlPlugin)
+            // 处理多页面
+            globby
+                .sync([resolveApp('src/pages') + '/*/index.tsx'], {
+                    cwd: process.cwd(),
+                })
+                .forEach(v => {
+                    const fileParse = path.parse(v)
+
+                    const entryName = fileParse.dir.split('/').pop()
+
+                    newEntry[entryName] = [
+                        require.resolve('react-app-polyfill/stable'),
+                        ...(!isProd
+                            ? [
+                                  require.resolve(
+                                      'react-dev-utils/webpackHotDevClient',
+                                  ),
+                              ]
+                            : []),
+                        v,
+                    ]
+
+                    // 将 css|less 文件合并成一个文件, mini-css-extract-plugin 的用法请参见文档：https://www.npmjs.com/package/mini-css-extract-plugin
+                    // MiniCssExtractPlugin 会将动态 import 引入的模块的样式文件也分离出去，将这些样式文件合并成一个文件可以提高渲染速度
+                    // const styleName = `${entryName}Styles`
+                    // styleCacheGroups = {
+                    //     ...styleCacheGroups,
+                    //     [styleName]: {
+                    //         name: styleName,
+                    //         test: (m, c, entry = styleName) =>
+                    //             m.constructor.name === 'CssModule' &&
+                    //             recursiveIssuer(m) === entry,
+                    //         chunks: 'all', // merge all the css chunk to one file
+                    //         enforce: true,
+                    //     },
+                    // }
+
+                    config.plugins.push(
+                        new HtmlWebpackPlugin({
+                            inject: true,
+                            template: paths.appHtml,
+                            filename: entryName + '.html',
+                            chunks: [entryName],
+                            ...(isProd && {
+                                minify: {
+                                    removeComments: true,
+                                    collapseWhitespace: true,
+                                    removeRedundantAttributes: true,
+                                    useShortDoctype: true,
+                                    removeEmptyAttributes: true,
+                                    removeStyleLinkTypeAttributes: true,
+                                    keepClosingSlash: true,
+                                    minifyJS: true,
+                                    minifyCSS: true,
+                                    minifyURLs: true,
+                                },
+                            }),
+                        }),
+                    )
+                })
+
+            // 修改入口
+            config.entry = newEntry
 
             if (isLint) {
                 // 配置stylelint
@@ -214,13 +208,6 @@ module.exports = {
                 /*'@primary-color': '#1DA57A'*/
             },
         }),
-        addBundleVisualizer(
-            {
-                analyzerMode: 'static',
-                reportFilename: 'report.html',
-            },
-            !+analyze,
-        ),
         addWebpackAlias({
             '@a': resolve('src/assets'),
             '@m': resolve('src/models'),
@@ -239,7 +226,10 @@ module.exports = {
         config.after = server => {
             new DataMock(server, {
                 target: path.resolve(__dirname, './src/mocks/'),
-                watchTarget: path.resolve(__dirname, './src/api/'),
+                watchTarget: [
+                    path.resolve(__dirname, './src/plugins/api'),
+                    path.resolve(__dirname, './src/api/'),
+                ],
             })
         }
 

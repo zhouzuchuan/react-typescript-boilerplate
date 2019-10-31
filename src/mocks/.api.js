@@ -1,8 +1,22 @@
-// api储存
+/**
+ * api储存
+ * */
+
+const { extractApi } = require('api-manage')
+const globby = require('globby')
+const path = require('path')
+
+const { createApiList, a } = require('../plugins/api')
 
 module.exports = {
     // 载入api目录清单
-    api: require('api-manage').extractApi(require('../api')),
+    api: extractApi(
+        createApiList(
+            globby
+                .sync([path.resolve(__dirname, '../api') + '/*.js'])
+                .map(v => require(v)),
+        ),
+    ),
 
     // 接口返回统一格式
     returnAcition(res, result = {}, options = {}) {
