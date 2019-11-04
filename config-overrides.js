@@ -3,6 +3,7 @@ const {
     fixBabelImports,
     addWebpackAlias,
     addLessLoader,
+    addBabelPlugin,
     addDecoratorsLegacy,
 } = require('customize-cra')
 const { paths } = require('react-app-rewired')
@@ -208,7 +209,12 @@ module.exports = {
                 /*'@primary-color': '#1DA57A'*/
             },
         }),
+        addBabelPlugin('react-hot-loader/babel'),
         addWebpackAlias({
+            'react-dom':
+                process.env.NODE_ENV === 'production'
+                    ? 'react-dom'
+                    : '@hot-loader/react-dom',
             '@a': resolve('src/assets'),
             '@m': resolve('src/models'),
             '@c': resolve('src/components'),

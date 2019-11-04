@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { init, middlewares } from 'react-enhanced'
+import { hot } from 'react-hot-loader/root'
 import { HashRouter as Router, RouteProps } from 'react-router-dom'
 import { ConfigProvider } from 'antd'
 import zhCN from 'antd/lib/locale-provider/zh_CN'
@@ -37,27 +38,18 @@ const { Provider } = init({
     },
 })
 
-const rootEl = document.getElementById('root') as HTMLElement
-const render = (Wrap: any) => {
-    ReactDOM.render(
-        <Provider>
+const WithHotReload = process.env.NODE_ENV === 'production' ? App : hot(App)
+
+ReactDOM.render(
+    <Provider>
+        <Router>
             <Router>
                 <ConfigProvider locale={zhCN}>
-                    <Wrap />
+                    <WithHotReload />
                 </ConfigProvider>
             </Router>
-        </Provider>,
-        rootEl,
-    )
-    serviceWorker.unregister()
-}
-
-render(App)
-
-const { hot } = module as any
-if (hot) {
-    hot.accept('./App', () => {
-        const NextApp = require('./App').default
-        render(NextApp)
-    })
-}
+        </Router>
+    </Provider>,
+    document.getElementById('root'),
+)
+serviceWorker.unregister()

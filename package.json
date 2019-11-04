@@ -1,6 +1,6 @@
 {
     "name": "react-typescript-boilerplate",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "private": true,
     "dependencies": {
         "@types/jest": "24.0.21",
@@ -72,6 +72,7 @@
     },
     "devDependencies": {
         "@babel/plugin-proposal-decorators": "^7.6.0",
+        "@hot-loader/react-dom": "^16.10.2",
         "@storybook/addon-actions": "^5.2.5",
         "@storybook/addon-links": "^5.2.5",
         "@storybook/react": "^5.2.5",
@@ -85,6 +86,7 @@
         "lodash-webpack-plugin": "^0.11.5",
         "react-app-rewired": "^2.1.4",
         "react-docgen-typescript": "^1.15.1",
+        "react-hot-loader": "^4.12.15",
         "react-styleguidist": "^10.0.0",
         "source-map-explorer": "^2.1.0",
         "stylelint": "^11.1.1",
