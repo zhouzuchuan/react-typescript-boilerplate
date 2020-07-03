@@ -1,6 +1,6 @@
 import React from 'react'
-import { Switch, NavLink } from 'react-router-dom'
-import { asyncComponent, components as C } from 'react-enhanced'
+import { Switch, Route, NavLink } from 'react-router-dom'
+import { asyncComponent } from 'react-enhanced'
 import styled from 'styled-components'
 import logo from '@a/logo.svg'
 
@@ -15,25 +15,7 @@ const menuData = [
     },
 ]
 
-const routeRender = () => (
-    <Switch>
-        <C.Route
-            component={asyncComponent({
-                component: () => import('@cn/Home'),
-                model: () => import('@m/home'),
-            })}
-            exact={true}
-            path="/"
-        />
-        <C.Route
-            component={asyncComponent(() => import('@cn/About'))}
-            exact={true}
-            path="/about"
-        />
-    </Switch>
-)
-
-const App: React.FC = () => {
+export default function App() {
     return (
         <AppWrap>
             <header className="App-header">
@@ -63,13 +45,25 @@ const App: React.FC = () => {
                 </Headerbox>
             </header>
             <section>
-                <C.Route render={routeRender} />
+                <Switch>
+                    <Route
+                        component={asyncComponent({
+                            component: () => import('@cn/Home'),
+                            model: () => import('@m/home'),
+                        })}
+                        exact={true}
+                        path="/"
+                    />
+                    <Route
+                        component={asyncComponent(() => import('@cn/About'))}
+                        exact={true}
+                        path="/about"
+                    />
+                </Switch>
             </section>
         </AppWrap>
     )
 }
-
-export default App
 
 const Logo = styled.img`
     height: 40vmin;
@@ -100,7 +94,7 @@ const AppWrap = styled.div`
     }
 
     a {
-        color: #09d3ac;
+        color: #61dafb;
     }
 `
 
@@ -117,7 +111,7 @@ const Headerbox = styled.div`
         text-decoration: none;
 
         &.active {
-            background: #09d3ac;
+            background: #61dafb;
         }
     }
 `

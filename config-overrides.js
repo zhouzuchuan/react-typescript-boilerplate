@@ -2,9 +2,10 @@ const {
     override,
     fixBabelImports,
     addWebpackAlias,
+    addBabelPlugins,
     addLessLoader,
-    addBabelPlugin,
     addDecoratorsLegacy,
+    disableEsLint,
 } = require('customize-cra')
 const { paths } = require('react-app-rewired')
 const path = require('path')
@@ -13,25 +14,16 @@ const DataMock = require('data-mock')
 const StyleLintPlugin = require('stylelint-webpack-plugin')
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const HtmlWebpackCommentPlugin = require('html-webpack-comment-plugin')
 
 const globby = require('globby')
 
 const appDirectory = fs.realpathSync(process.cwd())
-const resolveApp = relativePath => path.resolve(appDirectory, relativePath)
+const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath)
 
 function resolve(dir) {
     return path.join(__dirname, dir)
 }
-
-// function recursiveIssuer(m) {
-//     if (m.issuer) {
-//         return recursiveIssuer(m.issuer)
-//     } else if (m.name) {
-//         return m.name
-//     } else {
-//         return false
-//     }
-// }
 
 /**
  *
@@ -46,22 +38,40 @@ const lintSwitch = 1
 
 module.exports = {
     webpack: override(
-        (config, env) => {
+        addDecoratorsLegacy(),
+        disableEsLint(),
+
+        addLessLoader({
+            lessOptions: {
+                javascriptEnabled: true,
+                // modifyVars: { '@primary-color': '#1DA57A' },
+            },
+        }),
+        (config) => {
+            const env = process.env.NODE_ENV
             const isProd = env === 'production'
+
             const isLint = !(
                 lintSwitch === 0 ||
-                (lintSwitch === 1 && config.mode === 'development')
+                (lintSwitch === 1 && env === 'development')
             )
+
+            config.devtool =
+                env === 'development'
+                    ? 'cheap-module-eval-source-map'
+                    : !!process.env.source_map
+                    ? 'source-map'
+                    : false
 
             config.plugins.forEach((item, i) => {
                 const strConstructor = item.constructor.toString()
 
                 if (
-                    !isLint &&
                     strConstructor.indexOf('class ForkTsCheckerWebpackPlugin') >
-                        -1
+                    -1
                 ) {
-                    item.ignoreLintWarnings = true
+                    item.ignoreLintWarnings = !isLint
+                    item.options.async = isLint
                 }
 
                 if (isProd) {
@@ -75,12 +85,6 @@ module.exports = {
                         item.options.chunkFilename =
                             'static/css/[name].chunk.[chunkhash:8].css'
                     }
-
-                    // SWPrecacheWebpackPlugin: 使用 service workers 缓存项目依赖
-                    // if (strConstructor.indexOf('class GenerateSW') > -1) {
-                    //     // 更改输出的文件名
-                    //     item.config.precacheManifestFilename = 'precache-manifest.[chunkhash:8].js';
-                    // }
                 }
 
                 // 删除默认 HtmlWebpackPlugin 插件
@@ -100,14 +104,13 @@ module.exports = {
             }
 
             const newEntry = {}
-            // const styleCacheGroups = {}
 
             // 处理多页面
             globby
                 .sync([resolveApp('src/pages') + '/*/index.tsx'], {
                     cwd: process.cwd(),
                 })
-                .forEach(v => {
+                .forEach((v) => {
                     const fileParse = path.parse(v)
 
                     const entryName = fileParse.dir.split('/').pop()
@@ -117,27 +120,12 @@ module.exports = {
                         ...(!isProd
                             ? [
                                   require.resolve(
-                                      'react-dev-utils/webpackHotDevClient',
+                                      'react-scripts/node_modules/react-dev-utils/webpackHotDevClient',
                                   ),
                               ]
                             : []),
                         v,
                     ]
-
-                    // 将 css|less 文件合并成一个文件, mini-css-extract-plugin 的用法请参见文档：https://www.npmjs.com/package/mini-css-extract-plugin
-                    // MiniCssExtractPlugin 会将动态 import 引入的模块的样式文件也分离出去，将这些样式文件合并成一个文件可以提高渲染速度
-                    // const styleName = `${entryName}Styles`
-                    // styleCacheGroups = {
-                    //     ...styleCacheGroups,
-                    //     [styleName]: {
-                    //         name: styleName,
-                    //         test: (m, c, entry = styleName) =>
-                    //             m.constructor.name === 'CssModule' &&
-                    //             recursiveIssuer(m) === entry,
-                    //         chunks: 'all', // merge all the css chunk to one file
-                    //         enforce: true,
-                    //     },
-                    // }
 
                     config.plugins.push(
                         new HtmlWebpackPlugin({
@@ -145,8 +133,9 @@ module.exports = {
                             template: paths.appHtml,
                             filename: entryName + '.html',
                             chunks: [entryName],
-                            ...(isProd && {
-                                minify: {
+
+                            minify: {
+                                ...(isProd && {
                                     removeComments: true,
                                     collapseWhitespace: true,
                                     removeRedundantAttributes: true,
@@ -157,8 +146,8 @@ module.exports = {
                                     minifyJS: true,
                                     minifyCSS: true,
                                     minifyURLs: true,
-                                },
-                            }),
+                                }),
+                            },
                         }),
                     )
                 })
@@ -174,69 +163,95 @@ module.exports = {
                     }),
                 )
             }
+
             // 配置 lodash 树摇
             config.plugins.push(
                 new LodashModuleReplacementPlugin({ paths: true }),
+                new HtmlWebpackCommentPlugin(),
             )
 
-            // 修改代码拆分规则，详见 webpack 文档：https://webpack.js.org/plugins/split-chunks-plugin/#optimization-splitchunks
             config.optimization = {
                 splitChunks: {
                     cacheGroups: {
-                        // 通过正则匹配，将 react react-dom react-enhanced  styled-components 等公共模块拆分为 vendor
-                        // 这里仅作为示例，具体需要拆分哪些模块需要根据项目需要进行配置
-                        // 可以通过 BundleAnalyzerPlugin 帮助确定拆分哪些模块包
                         vendor: {
-                            test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+                            test: /[\\/]node_modules[\\/](react|react-dom|core-js)[\\/]/,
                             name: 'vendor',
                             chunks: 'all', // all, async, and initial
                         },
-                        // ...styleCacheGroups,
+
+                        // rcpicker: {
+                        //     test: /[\\/]node_modules[\\/](rc-calendar|rc-time-picker|rc-trigger|rc-util|rc-animate|rc-align|css-animation|add-dom-event-listener)[\\/]/,
+                        //     name: 'rcpicker',
+                        //     chunks: 'all', // all, async, and initial
+                        // },
+                        // echarts: {
+                        //     test: /[\\/]node_modules[\\/](echarts|echarts-for-react|zrender)[\\/]/,
+                        //     name: 'echarts',
+                        //     chunks: 'all', // all, async, and initial
+                        // },
+                        // draft: {
+                        //     test: /[\\/]node_modules[\\/](react-draft-wysiwyg|draft-js|html-to-draftjs|draftjs-to-html)[\\/]/,
+                        //     name: 'draft',
+                        //     chunks: 'all', // all, async, and initial
+                        // },
+                        // material_ui: {
+                        //     test: /[\\/]node_modules[\\/](@material-ui|material-ui-flat-pagination|material-table|react-beautiful-dnd|date-fns)[\\/]/,
+                        //     name: 'material_ui',
+                        //     chunks: 'all', // all, async, and initial
+                        // },
                     },
                 },
             }
 
             return config
         },
+        // fixBabelImports(
+        //     'import',
+        //     {
+        //         libraryName: '@material-ui/core',
+        //         libraryDirectory: 'esm',
+        //         camel2DashComponentName: false,
+        //     },
+        //     'core',
+        // ),
+
         fixBabelImports('import', {
             libraryName: 'antd',
             libraryDirectory: 'es',
             style: 'css',
         }),
-        addLessLoader({
-            javascriptEnabled: true,
-            modifyVars: {
-                /*'@primary-color': '#1DA57A'*/
-            },
-        }),
-        addBabelPlugin('react-hot-loader/babel'),
+        ...addBabelPlugins('react-hot-loader/babel'),
         addWebpackAlias({
-            'react-dom':
-                process.env.NODE_ENV === 'production'
-                    ? 'react-dom'
-                    : '@hot-loader/react-dom',
+            // 'react-dom':
+            //     process.env.NODE_ENV === 'production'
+            //         ? 'react-dom'
+            //         : '@hot-loader/react-dom',
             '@a': resolve('src/assets'),
             '@m': resolve('src/models'),
             '@c': resolve('src/components'),
             '@cn': resolve('src/containers'),
             '@s': resolve('src/styles'),
-            '@mk': resolve('src/mocks'),
+            '@p': resolve('src/plugins'),
             '@u': resolve('src/utils'),
             '@rw': resolve('src/serviceWorker.ts'),
             '@': resolve('src'),
         }),
-        addDecoratorsLegacy(),
     ),
-    devServer: configFn => (proxy, allowedHost) => {
+    devServer: (configFn) => (proxy, allowedHost) => {
         const config = configFn(proxy, allowedHost)
-        config.after = server => {
-            new DataMock(server, {
-                target: path.resolve(__dirname, './src/mocks/'),
-                watchTarget: [
-                    path.resolve(__dirname, './src/plugins/api'),
-                    path.resolve(__dirname, './src/api/'),
-                ],
-            })
+        config.after = (server) => {
+            try {
+                new DataMock(server, {
+                    target: path.resolve(__dirname, './src/mocks/'),
+                    watchTarget: [
+                        path.resolve(__dirname, './src/plugins/api'),
+                        path.resolve(__dirname, './src/api/'),
+                    ],
+                })
+            } catch (err) {
+                console.log('mock server start error!')
+                console.log(err)
+            }
         }
 
         return config

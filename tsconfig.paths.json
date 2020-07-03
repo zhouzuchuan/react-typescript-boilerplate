@@ -7,8 +7,8 @@
             "@c/*": ["src/components/*"],
             "@cn/*": ["src/containers/*"],
             "@s/*": ["src/styles/*"],
-            "@mk/*": ["src/mocks/*"],
             "@u/*": ["src/utils/*"],
+            "@p/*": ["src/plugins/*"],
             "@rw": ["src/serviceWorker.ts"],
             "@/*": ["src/*"]
         }

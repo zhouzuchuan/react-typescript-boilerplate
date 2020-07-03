@@ -1,21 +1,10 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { components as C } from 'react-enhanced'
 
-type Tprops = {
-    dataSource: any
-    startAction: any
-}
-
-const List = (props: Tprops) => {
-    useEffect(() => {
-        props.startAction()
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-
+export default function List({ dataSource }: { dataSource: any[] }) {
     return (
         <C.Loading className="mt30" include="serveGetPackageList">
-            {props.dataSource.map((item: any, index: number) => {
+            {dataSource.map((item: any, index: number) => {
                 return (
                     <div className="package-list" key={index}>
                         <h3>{item.get('name')}</h3>
@@ -39,5 +28,3 @@ const List = (props: Tprops) => {
         </C.Loading>
     )
 }
-
-export default List

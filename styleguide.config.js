@@ -20,10 +20,10 @@ const alias = _.reduce(
 module.exports = {
     title: 'react-typescript-boilerplate',
 
-    components: function() {
+    components: function () {
         return glob
             .sync(path.resolve(__dirname, 'src/components/**/*.tsx'))
-            .filter(function(module) {
+            .filter(function (module) {
                 return /\/[A-Z]\w*\.tsx$/.test(module)
             })
     },
