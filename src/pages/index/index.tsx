@@ -1,8 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { init, middlewares } from 'react-enhanced'
+import { init } from 'react-enhanced'
 import { hot } from 'react-hot-loader/root'
-import { routerMiddleware } from 'connected-react-router'
+// import { routerMiddleware } from 'connected-react-router'
 import { Router } from 'react-router-dom'
 // import { ConfigProvider } from 'antd'
 // import zhCN from 'antd/lib/locale-provider/zh_CN'
@@ -22,21 +22,14 @@ const apiFiles = require.context('@/api/', true, /\.js$/)
 
 const { Provider } = init({
     warehouse: [], // 仓库名
-    api: {
+    apiConfig: {
         list: createApiList(apiFiles.keys().map((v) => apiFiles(v))),
-    },
-    limitResponse: (res: any) => {
-        return res.data.result
+        limitResponse: (res: any) => {
+            return res.data.result
+        },
     },
     modelConfig: {
-        middlewares: [
-            [
-                middlewares.requestMiddleware.bind(null, {
-                    resultLimit: 'result',
-                }),
-                routerMiddleware(history),
-            ],
-        ],
+        // middlewares: [[routerMiddleware(history)]],
         // effects: [sagas('sagas'), epics('epics')],
     },
 })

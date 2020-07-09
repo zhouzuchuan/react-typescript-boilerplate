@@ -1,4 +1,3 @@
-import { hooks } from 'react-enhanced'
 import { map, switchMap } from 'rxjs/operators'
 import { ActionsObservable } from 'redux-observable'
 import { fromJS, Record } from 'immutable'
@@ -6,10 +5,7 @@ import { AnyAction } from 'redux'
 
 const nameList = ['Installed CLI Package', 'Installed CLI Rely Package']
 
-export default () => {
-    // 获取通过request包装后的api服务
-    const { serveGetPackageList } = hooks.useRequest()
-
+export default ({ serveGetPackageList }: any) => {
     return {
         // model 名称
         namespace: 'home',

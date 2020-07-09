@@ -178,27 +178,6 @@ module.exports = {
                             name: 'vendor',
                             chunks: 'all', // all, async, and initial
                         },
-
-                        // rcpicker: {
-                        //     test: /[\\/]node_modules[\\/](rc-calendar|rc-time-picker|rc-trigger|rc-util|rc-animate|rc-align|css-animation|add-dom-event-listener)[\\/]/,
-                        //     name: 'rcpicker',
-                        //     chunks: 'all', // all, async, and initial
-                        // },
-                        // echarts: {
-                        //     test: /[\\/]node_modules[\\/](echarts|echarts-for-react|zrender)[\\/]/,
-                        //     name: 'echarts',
-                        //     chunks: 'all', // all, async, and initial
-                        // },
-                        // draft: {
-                        //     test: /[\\/]node_modules[\\/](react-draft-wysiwyg|draft-js|html-to-draftjs|draftjs-to-html)[\\/]/,
-                        //     name: 'draft',
-                        //     chunks: 'all', // all, async, and initial
-                        // },
-                        // material_ui: {
-                        //     test: /[\\/]node_modules[\\/](@material-ui|material-ui-flat-pagination|material-table|react-beautiful-dnd|date-fns)[\\/]/,
-                        //     name: 'material_ui',
-                        //     chunks: 'all', // all, async, and initial
-                        // },
                     },
                 },
             }
@@ -226,6 +205,8 @@ module.exports = {
             //     process.env.NODE_ENV === 'production'
             //         ? 'react-dom'
             //         : '@hot-loader/react-dom',
+            react: path.resolve('./node_modules/react'),
+            'react-redux': path.resolve('./node_modules/react-redux'),
             '@a': resolve('src/assets'),
             '@m': resolve('src/models'),
             '@c': resolve('src/components'),
