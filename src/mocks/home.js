@@ -11,8 +11,14 @@ const {
 
 module.exports = {
     [apiGetPackageList]: (req, res) => {
-        returnAcition(res, {
-            result: [packageList, relypackageList],
-        })
+        returnAcition(
+            res,
+            {
+                result: [packageList, relypackageList],
+            },
+            {
+                delay: 4000,
+            },
+        )
     },
 }

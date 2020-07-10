@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { init } from 'react-enhanced'
 import { hot } from 'react-hot-loader/root'
-// import { routerMiddleware } from 'connected-react-router'
+import { routerMiddleware } from 'connected-react-router'
 import { Router } from 'react-router-dom'
 // import { ConfigProvider } from 'antd'
 // import zhCN from 'antd/lib/locale-provider/zh_CN'
@@ -21,7 +21,6 @@ import '@s/index.less'
 const apiFiles = require.context('@/api/', true, /\.js$/)
 
 const { Provider } = init({
-    warehouse: [], // 仓库名
     apiConfig: {
         list: createApiList(apiFiles.keys().map((v) => apiFiles(v))),
         limitResponse: (res: any) => {
@@ -29,8 +28,11 @@ const { Provider } = init({
         },
     },
     modelConfig: {
-        // middlewares: [[routerMiddleware(history)]],
+        middlewares: [[routerMiddleware(history)]],
         // effects: [sagas('sagas'), epics('epics')],
+    },
+    requestLoadingConfig: {
+        color: '#61dafb',
     },
 })
 
@@ -40,7 +42,7 @@ ReactDOM.render(
     <Provider>
         <Router history={history}>
             {/* <ConfigProvider locale={zhCN}> */}
-            <App />
+            <WithHotReload />
             {/* </ConfigProvider> */}
         </Router>
     </Provider>,

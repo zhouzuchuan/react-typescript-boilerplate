@@ -48,7 +48,7 @@ export default function App() {
                 <Switch>
                     <Route
                         component={asyncComponent(() => import('@cn/Home'), {
-                            models: () => import('@m/home'),
+                            models: [() => import('@m/home')],
                         })}
                         exact={true}
                         path="/"

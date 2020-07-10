@@ -30,7 +30,7 @@
         "ramda": "^0.27.0",
         "react": "^16.13.1",
         "react-dom": "^16.13.1",
-        "react-enhanced": "^2.3.0",
+        "react-enhanced": "^3.0.0-beta.1",
         "react-helmet": "^6.1.0",
         "react-intl": "^4.7.6",
         "react-redux": "^7.2.0",
@@ -41,7 +41,6 @@
         "typescript": "~3.7.2"
     },
     "scripts": {
-        "start2": "react-scripts start",
         "start": "react-app-rewired start",
         "build": "react-app-rewired build",
         "test": "react-app-rewired test",
