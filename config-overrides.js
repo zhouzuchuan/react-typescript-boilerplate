@@ -205,8 +205,8 @@ module.exports = {
                 process.env.NODE_ENV === 'production'
                     ? 'react-dom'
                     : '@hot-loader/react-dom',
-            // react: path.resolve('./node_modules/react'),
-            // 'react-redux': path.resolve('./node_modules/react-redux'),
+            react: path.resolve('./node_modules/react'),
+            'react-redux': path.resolve('./node_modules/react-redux'),
             '@a': resolve('src/assets'),
             '@m': resolve('src/models'),
             '@c': resolve('src/components'),

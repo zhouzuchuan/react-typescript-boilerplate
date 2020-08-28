@@ -10,6 +10,7 @@ import * as serviceWorker from '@rw'
 import App from './App'
 import { createApiList } from '@/plugins/api'
 import { history } from '@/plugins/history'
+import axios from 'axios'
 // import sagas from 'model-redux/lib/effects/sagas';
 // import epics from 'model-redux/lib/effects/epics';
 
@@ -22,15 +23,18 @@ const apiFiles = require.context('@/api/', true, /\.js$/)
 
 const { Provider } = init({
     apiConfig: {
+        request: axios as any,
+        CancelRequest: axios.CancelToken,
         list: createApiList(apiFiles.keys().map((v) => apiFiles(v))),
-        limitResponse: (res: any) => {
-            return res.data.result
-        },
+        // 提取response值
+        limitResponse: (res: any) => res.data.result,
+        // 验证 返回的数据 不通过 则 请求函数 reject
+        validate: () => true,
     },
     modelConfig: {
         middlewares: [[routerMiddleware(history)]],
         // effects: [sagas('sagas'), epics('epics')],
-    },
+    } as any,
     requestLoadingConfig: {
         color: '#61dafb',
     },

@@ -5,9 +5,7 @@ import styled from 'styled-components'
 import List from '@c/List'
 
 export default function HomePage() {
-    const packageList = useSelector(({ home }: any) => {
-        return home.get('packageList')
-    })
+    const packageList = useSelector(({ home }: any) => home.packageList)
     const dispatch = useDispatch()
     useEffect(() => {
         dispatch({

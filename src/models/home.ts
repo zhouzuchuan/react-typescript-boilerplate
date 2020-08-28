@@ -1,7 +1,8 @@
 import { map, switchMap } from 'rxjs/operators'
-import { ActionsObservable } from 'redux-observable'
-import { fromJS, Record } from 'immutable'
+// import { ActionsObservable } from 'redux-observable'
 import { AnyAction } from 'redux'
+import produce from 'immer'
+import _ from 'lodash'
 
 const nameList = ['Installed CLI Package', 'Installed CLI Rely Package']
 
@@ -11,9 +12,9 @@ export default ({ serveGetPackageList }: any) => {
         namespace: 'home',
 
         // 默认数据
-        state: fromJS({
+        state: {
             packageList: [],
-        }),
+        },
 
         /**
          *
@@ -22,18 +23,16 @@ export default ({ serveGetPackageList }: any) => {
          *
          */
         epics: {
-            getPackageList: (epic$: ActionsObservable<AnyAction>) =>
+            getPackageList: (epic$: any) =>
                 epic$.pipe(
                     switchMap(() => serveGetPackageList()),
                     map((v: any) => ({
                         type: 'setState',
                         payload: {
-                            packageList: fromJS(
-                                v.map((o: any, i: number) => ({
-                                    name: nameList[i],
-                                    list: o,
-                                })),
-                            ),
+                            packageList: v.map((o: any, i: number) => ({
+                                name: nameList[i],
+                                list: o,
+                            })),
                         },
                     })),
                 ),
@@ -66,11 +65,11 @@ export default ({ serveGetPackageList }: any) => {
         //     },
         // },
         reducers: {
-            setState: (state: Record<any>, action: AnyAction) =>
-                Object.entries(action.payload || {}).reduce(
-                    (r, [k, v]: any[]) => r.setIn(k.split('.'), fromJS(v)),
-                    state,
-                ),
+            setState: produce((state: any, action: AnyAction) => {
+                Object.entries(action.payload || {}).forEach(([k, v]) => {
+                    _.set(state, k, v)
+                })
+            }),
         },
     }
 }
