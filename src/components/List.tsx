@@ -1,9 +1,8 @@
 import React from 'react'
-import { RequestLoading } from 'react-enhanced'
 
 export default function List({ dataSource }: { dataSource: any[] }) {
     return (
-        <RequestLoading className="pad30" include="serveGetPackageList">
+        <>
             {dataSource.map((item) => (
                 <div className="package-list" key={item.name}>
                     <h3>{item.name}</h3>
@@ -23,6 +22,6 @@ export default function List({ dataSource }: { dataSource: any[] }) {
                     </ul>
                 </div>
             ))}
-        </RequestLoading>
+        </>
     )
 }

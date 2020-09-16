@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import styled from 'styled-components'
+import { RequestLoading } from 'react-enhanced'
 
 import List from '@c/List'
 
@@ -31,7 +32,9 @@ export default function HomePage() {
                 To get started, edit <code>src/pages/index/App.js</code> and
                 save to reload.
             </p>
-            <List dataSource={packageList} />
+            <RequestLoading className="pad30" include="serveGetPackageList">
+                <List dataSource={packageList} />
+            </RequestLoading>
         </StyledWrap>
     )
 }
