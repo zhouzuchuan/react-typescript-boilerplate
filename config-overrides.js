@@ -120,7 +120,7 @@ module.exports = {
                         ...(!isProd
                             ? [
                                   require.resolve(
-                                      'react-scripts/node_modules/react-dev-utils/webpackHotDevClient',
+                                      'react-dev-utils/webpackHotDevClient',
                                   ),
                               ]
                             : []),
