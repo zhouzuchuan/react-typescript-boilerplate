@@ -3,7 +3,7 @@ import React from 'react'
 export default function List({ dataSource }: { dataSource: any[] }) {
     return (
         <>
-            {dataSource.map((item) => (
+            {dataSource?.map?.((item) => (
                 <div className="package-list" key={item.name}>
                     <h3>{item.name}</h3>
                     <ul className="lay-list">

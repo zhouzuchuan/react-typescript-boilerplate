@@ -5,7 +5,7 @@
 const globby = require('globby')
 const path = require('path')
 
-const { createApiList, a } = require('../plugins/api')
+const { createApiList } = require('../plugins/api')
 
 const extractApi = (data) => {
     return Object.entries(data).reduce((r, [method, apis]) => {

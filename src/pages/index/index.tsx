@@ -4,13 +4,14 @@ import { init } from 'react-enhanced'
 import { hot } from 'react-hot-loader/root'
 import { routerMiddleware } from 'connected-react-router'
 import { Router } from 'react-router-dom'
+import axios from 'axios'
 // import { ConfigProvider } from 'antd'
 // import zhCN from 'antd/lib/locale-provider/zh_CN'
 import * as serviceWorker from '@rw'
 import App from './App'
 import { createApiList } from '@/plugins/api'
 import { history } from '@/plugins/history'
-import axios from 'axios'
+import '@/plugins/icons'
 // import sagas from 'model-redux/lib/effects/sagas';
 // import epics from 'model-redux/lib/effects/epics';
 
