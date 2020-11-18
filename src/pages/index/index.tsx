@@ -11,7 +11,6 @@ import * as serviceWorker from '@rw'
 import App from './App'
 import { createApiList } from '@/plugins/api'
 import { history } from '@/plugins/history'
-import '@/plugins/icons'
 // import sagas from 'model-redux/lib/effects/sagas';
 // import epics from 'model-redux/lib/effects/epics';
 
