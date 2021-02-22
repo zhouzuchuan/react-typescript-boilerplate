@@ -1,12 +1,12 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { init } from 'react-enhanced'
+import { ThemeProvider } from 'styled-components'
 import { hot } from 'react-hot-loader/root'
 import { routerMiddleware } from 'connected-react-router'
 import { Router } from 'react-router-dom'
 import axios from 'axios'
-// import { ConfigProvider } from 'antd'
-// import zhCN from 'antd/lib/locale-provider/zh_CN'
+import { SnackbarProvider } from 'notistack'
 import App from './App'
 import { createApiList } from '@/plugins/api'
 import { history } from '@/plugins/history'
@@ -43,13 +43,15 @@ const { Provider } = init({
 const WithHotReload = process.env.NODE_ENV === 'production' ? App : hot(App)
 
 ReactDOM.render(
-    <Provider>
-        <Router history={history}>
-            {/* <ConfigProvider locale={zhCN}> */}
-            <WithHotReload />
-            {/* </ConfigProvider> */}
-        </Router>
-    </Provider>,
+    <SnackbarProvider>
+        <Provider>
+            <ThemeProvider theme={{}}>
+                <Router history={history}>
+                    <WithHotReload />
+                </Router>
+            </ThemeProvider>
+        </Provider>
+    </SnackbarProvider>,
     document.getElementById('root'),
 )
 reportWebVitals()
