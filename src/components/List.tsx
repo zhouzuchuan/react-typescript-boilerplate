@@ -1,6 +1,4 @@
-import React from 'react'
-
-export default function List({ dataSource }: { dataSource: any[] }) {
+function List({ dataSource }: { dataSource: any[] }) {
     return (
         <>
             {dataSource?.map?.((item) => (
@@ -25,3 +23,5 @@ export default function List({ dataSource }: { dataSource: any[] }) {
         </>
     )
 }
+
+export default List
