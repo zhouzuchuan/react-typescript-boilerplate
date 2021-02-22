@@ -1,10 +1,12 @@
 import React from 'react'
 import List from './List'
 
-export default {
+const config = {
     component: List,
     title: 'Design System/List',
 }
+
+export default config
 
 export const placeholder = () => (
     <List

@@ -7,10 +7,10 @@ import { Router } from 'react-router-dom'
 import axios from 'axios'
 // import { ConfigProvider } from 'antd'
 // import zhCN from 'antd/lib/locale-provider/zh_CN'
-import * as serviceWorker from '@rw'
 import App from './App'
 import { createApiList } from '@/plugins/api'
 import { history } from '@/plugins/history'
+import reportWebVitals from '@/reportWebVitals'
 // import sagas from 'model-redux/lib/effects/sagas';
 // import epics from 'model-redux/lib/effects/epics';
 
@@ -52,4 +52,4 @@ ReactDOM.render(
     </Provider>,
     document.getElementById('root'),
 )
-serviceWorker.unregister()
+reportWebVitals()

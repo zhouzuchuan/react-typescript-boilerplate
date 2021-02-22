@@ -1,5 +1,3 @@
-// const { Random } = require('mockjs')
-
 const {
     DM: {
         api: { apiGetPackageList },
@@ -11,14 +9,8 @@ const {
 
 module.exports = {
     [apiGetPackageList]: (req, res) => {
-        returnAcition(
-            res,
-            {
-                result: [packageList, relypackageList],
-            },
-            {
-                delay: 4000,
-            },
-        )
+        returnAcition(res, {
+            result: [packageList, relypackageList],
+        })
     },
 }

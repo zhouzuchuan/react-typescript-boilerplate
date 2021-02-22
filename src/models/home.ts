@@ -6,7 +6,7 @@ import _ from 'lodash'
 
 const nameList = ['Installed CLI Package', 'Installed CLI Rely Package']
 
-export default ({ serveGetPackageList }: any) => {
+const model = ({ serveGetPackageList }: any) => {
     return {
         // model 名称
         namespace: 'home',
@@ -73,3 +73,5 @@ export default ({ serveGetPackageList }: any) => {
         },
     }
 }
+
+export default model

@@ -103,29 +103,15 @@ module.exports = {
                 config.output.chunkFilename = 'static/js/[name].chunk.js'
             }
 
-            const newEntry = {}
-
             // 处理多页面
-            globby
+
+            // 修改入口
+            config.entry = globby
                 .sync([resolveApp('src/pages') + '/*/index.tsx'], {
                     cwd: process.cwd(),
                 })
-                .forEach((v) => {
-                    const fileParse = path.parse(v)
-
-                    const entryName = fileParse.dir.split('/').pop()
-
-                    newEntry[entryName] = [
-                        require.resolve('react-app-polyfill/stable'),
-                        ...(!isProd
-                            ? [
-                                  require.resolve(
-                                      'react-dev-utils/webpackHotDevClient',
-                                  ),
-                              ]
-                            : []),
-                        v,
-                    ]
+                .reduce((r, v) => {
+                    const entryName = path.parse(v).dir.split('/').pop()
 
                     config.plugins.push(
                         new HtmlWebpackPlugin({
@@ -150,10 +136,22 @@ module.exports = {
                             },
                         }),
                     )
-                })
 
-            // 修改入口
-            config.entry = newEntry
+                    return {
+                        ...r,
+                        [entryName]: [
+                            require.resolve('react-app-polyfill/stable'),
+                            ...(!isProd
+                                ? [
+                                      //   require.resolve(
+                                      //       'react-dev-utils/webpackHotDevClient',
+                                      //   ),
+                                  ]
+                                : []),
+                            v,
+                        ],
+                    }
+                }, {})
 
             if (isLint) {
                 // 配置stylelint
@@ -184,21 +182,21 @@ module.exports = {
 
             return config
         },
-        // fixBabelImports(
-        //     'import',
-        //     {
-        //         libraryName: '@material-ui/core',
-        //         libraryDirectory: 'esm',
-        //         camel2DashComponentName: false,
-        //     },
-        //     'core',
-        // ),
+        fixBabelImports(
+            'import',
+            {
+                libraryName: '@material-ui/core',
+                libraryDirectory: 'esm',
+                camel2DashComponentName: false,
+            },
+            'core',
+        ),
 
-        fixBabelImports('import', {
-            libraryName: 'antd',
-            libraryDirectory: 'es',
-            style: 'css',
-        }),
+        // fixBabelImports('import', {
+        //     libraryName: 'antd',
+        //     libraryDirectory: 'es',
+        //     style: 'css',
+        // }),
         ...addBabelPlugins('react-hot-loader/babel'),
         addWebpackAlias({
             'react-dom':

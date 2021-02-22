@@ -4,19 +4,22 @@
 
 const globby = require('globby')
 const path = require('path')
+const { mock } = require('mockjs')
 
 const { createApiList } = require('../plugins/api')
 
-const extractApi = (data) => {
-    return Object.entries(data).reduce((r, [method, apis]) => {
-        return Object.entries(apis).reduce((r2, [apiName, apiPath]) => {
-            return {
-                ...r2,
-                [apiName]: `${method} ${apiPath}`,
-            }
-        }, r)
-    }, {})
-}
+const extractApi = (data) =>
+    Object.entries(data).reduce(
+        (r, [method, apis]) =>
+            Object.entries(apis).reduce(
+                (r2, [apiName, apiPath]) => ({
+                    ...r2,
+                    [apiName]: `${method} ${apiPath}`,
+                }),
+                r,
+            ),
+        {},
+    )
 
 module.exports = {
     // 载入api目录清单
@@ -32,12 +35,14 @@ module.exports = {
     returnAcition(res, result = {}, options = {}) {
         setTimeout(
             () =>
-                res.json({
-                    status: '0001',
-                    message: '成功',
-                    result: [],
-                    ...result,
-                }),
+                res.json(
+                    mock({
+                        status: '0001',
+                        message: '成功',
+                        result: [],
+                        ...result,
+                    }),
+                ),
             options.delay || 1000,
         )
     },
