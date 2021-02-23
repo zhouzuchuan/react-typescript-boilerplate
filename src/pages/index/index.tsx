@@ -6,7 +6,6 @@ import { hot } from 'react-hot-loader/root'
 import { routerMiddleware } from 'connected-react-router'
 import { Router } from 'react-router-dom'
 import axios from 'axios'
-import { SnackbarProvider } from 'notistack'
 import App from './App'
 import { createApiList } from '@/plugins/api'
 import { history } from '@/plugins/history'
@@ -18,6 +17,7 @@ import reportWebVitals from '@/reportWebVitals'
 import 'normalize.css'
 import 'css.preset'
 import '@s/index.less'
+import { snackbar, SnackbarProvider } from '@p/snackbar'
 
 const apiFiles = require.context('@/api/', true, /\.js$/)
 
@@ -29,7 +29,12 @@ const { Provider } = init({
         // 提取response值
         limitResponse: (res: any) => res.data.result,
         // 验证 返回的数据 不通过 则 请求函数 reject
-        validate: () => true,
+        validate: () => {
+            snackbar.enqueueSnackbar('请求成功', {
+                variant: 'info',
+            })
+            return true
+        },
     },
     modelConfig: {
         middlewares: [[routerMiddleware(history)]],
