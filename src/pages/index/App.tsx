@@ -4,6 +4,8 @@ import { asyncComponent } from 'react-enhanced'
 import styled from 'styled-components'
 import logo from '@a/logo.svg'
 
+var a = '22'
+
 const menuData = [
     {
         name: 'Home',
