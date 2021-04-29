@@ -8,4 +8,4 @@ module.exports = ({ server }) => ({
         // 获取包列表
         apiGetPackageList: `${server}/getPackageList`,
     },
-});
+})
