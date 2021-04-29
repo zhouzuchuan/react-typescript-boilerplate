@@ -4,6 +4,29 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+<div align="center">
+  <a href="https://reactjs.org/"><img height="40px" title="vue" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii0xMS41IC0xMC4yMzE3NCAyMyAyMC40NjM0OCI+CiAgPHRpdGxlPlJlYWN0IExvZ288L3RpdGxlPgogIDxjaXJjbGUgY3g9IjAiIGN5PSIwIiByPSIyLjA1IiBmaWxsPSIjNjFkYWZiIi8+CiAgPGcgc3Ryb2tlPSIjNjFkYWZiIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiPgogICAgPGVsbGlwc2Ugcng9IjExIiByeT0iNC4yIi8+CiAgICA8ZWxsaXBzZSByeD0iMTEiIHJ5PSI0LjIiIHRyYW5zZm9ybT0icm90YXRlKDYwKSIvPgogICAgPGVsbGlwc2Ugcng9IjExIiByeT0iNC4yIiB0cmFuc2Zvcm09InJvdGF0ZSgxMjApIi8+CiAgPC9nPgo8L3N2Zz4K" /></a>
+  <a href="https://prettier.io/"><img height="40px" title="prettier" src="https://prettier.io/icon.png" /></a>
+  <a href="https://webpack.github.io/"><img  height="40px" title="webpack" src="https://webpack.js.org/assets/icon-square-big.svg" /></a>
+  <a href="https://babeljs.io/"><img  height="40px" title="babel" src="https://d33wubrfki0l68.cloudfront.net/7a197cfe44548cc1a3f581152af70a3051e11671/78df8/img/babel.svg" /></a>
+  <a href="https://editorconfig.org/"><img  height="40px" title="editorconfig" src="https://editorconfig.org/logo.png" /></a>
+  <a href="https://eslint.org/"><img  height="40px" title="eslint" src="https://d33wubrfki0l68.cloudfront.net/204482ca413433c80cd14fe369e2181dd97a2a40/092e2/assets/img/logo.svg" /></a>
+  <a  href="https://stylelint.io/"><img  height="40px" title="stylelint" src="https://camo.githubusercontent.com/aa04feafbd080140cd834905cf171ccf7b06fc5f1f1ae07ce9879218165312d1/68747470733a2f2f63646e2e776f726c64766563746f726c6f676f2e636f6d2f6c6f676f732f7374796c656c696e742e737667" /></a>
+  <a href="https://github.com/styleguidist/snapguidist/blob/master/logo.png"><img  height="40px" title="styleguidist" src="https://react-styleguidist.js.org/img/logo.svg" /></a>
+
+</div>
+
+## `git clone`
+
+```bash
+
+git clone --depth 1 --single-branch https://github.com/zhouzuchuan/react-typescript-boilerplate.git your-project-name
+
+cd your-project-name
+
+npm install
+```
+
 ## Available Scripts
 
 In the project directory, you can run:
