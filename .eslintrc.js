@@ -4,7 +4,12 @@ module.exports = {
         node: true,
         browser: true,
     },
-    extends: ['react-app', 'react-app/jest', 'plugin:prettier/recommended'],
+    extends: [
+        'eslint:recommended',
+        'plugin:prettier/recommended',
+        'react-app',
+        'react-app/jest',
+    ],
 
     rules: {
         'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
