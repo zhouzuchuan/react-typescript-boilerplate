@@ -59,7 +59,7 @@ module.exports = {
             config.devtool =
                 env === 'development'
                     ? 'cheap-module-eval-source-map'
-                    : !!process.env.source_map
+                    : process.env.source_map
                     ? 'source-map'
                     : false
 
@@ -107,9 +107,14 @@ module.exports = {
 
             // 修改入口
             config.entry = globby
-                .sync([resolveApp('src/pages') + '/*/index.tsx'], {
-                    cwd: process.cwd(),
-                })
+                .sync(
+                    [resolveApp('src/pages') + '/*/index.tsx'].map((path) =>
+                        path.replace(/\\/g, '/'),
+                    ),
+                    {
+                        cwd: process.cwd(),
+                    },
+                )
                 .reduce((r, v) => {
                     const entryName = path.parse(v).dir.split('/').pop()
 

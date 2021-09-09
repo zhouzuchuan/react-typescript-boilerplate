@@ -26,24 +26,28 @@ module.exports = {
     api: extractApi(
         createApiList(
             globby
-                .sync([path.resolve(__dirname, '../api') + '/*.js'])
+                .sync(
+                    [path.resolve(__dirname, '../api') + '/*.js'].map((path) =>
+                        path.replace(/\\/g, '/'),
+                    ),
+                )
                 .map((v) => require(v)),
         ),
     ),
-
     // 接口返回统一格式
-    returnAcition(res, result = {}, options = {}) {
+    returnAcition(res, data = [], options = {}) {
+        const { delay = 1000, otherOpt } = options
         setTimeout(
             () =>
                 res.json(
                     mock({
-                        status: '0001',
-                        message: '成功',
-                        result: [],
-                        ...result,
+                        code: 200,
+                        msg: '成功',
+                        data,
+                        ...otherOpt,
                     }),
                 ),
-            options.delay || 1000,
+            delay,
         )
     },
 }
