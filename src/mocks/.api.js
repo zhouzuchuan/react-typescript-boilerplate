@@ -6,7 +6,7 @@ const globby = require('globby')
 const path = require('path')
 const { mock } = require('mockjs')
 
-const { createApiList } = require('../plugins/api')
+const { createApiList } = require('../api.config.js')
 
 const extractApi = (data) =>
     Object.entries(data).reduce(

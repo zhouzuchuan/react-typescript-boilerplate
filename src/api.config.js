@@ -11,9 +11,13 @@ const { bindApi } = require('api-manage')
 function createApiList(apiPaths) {
     return bindApi(apiPaths, {
         // 目录清单注入server
-        server: '',
+        server:
+            (process.env.NODE_ENV !== 'development'
+                ? ['', process.env.REACT_APP_API_PREFIX][0]
+                : process.env.REACT_APP_API_PREFIX) + '/api',
     })
 }
+
 module.exports = {
     createApiList,
 }

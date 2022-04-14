@@ -1,23 +1,21 @@
 import React from 'react'
-import { CssBaseline, Theme } from '@material-ui/core'
+import { CssBaseline, Theme } from '@mui/material'
 import {
     createTheme,
     ThemeProvider as MaterialThemeProvider,
-} from '@material-ui/core/styles'
-import { LocalizationProvider } from '@material-ui/pickers'
-import DateFnsAdapter from '@material-ui/pickers/adapter/date-fns'
-import zhLocale from 'date-fns/locale/zh-CN'
+} from '@mui/material/styles'
+import LocalizationProvider from '@mui/lab/LocalizationProvider'
+import DateAdapter from '@mui/lab/AdapterDayjs'
+import zhLocale from 'dayjs/locale/zh-cn'
+import { RecoilRoot } from 'recoil'
 
-import { getRequestLoadingProps } from 'react-enhanced'
-import Loading from 'react-enhanced/lib/components/Loading'
 import { ThemeProvider, createGlobalStyle } from 'styled-components'
 
 // 重置样式
-import { SnackbarProvider } from '@p/snackbar'
 
-import EnhancedProvider from '@/plugins/apiMange'
+import { SnackbarProvider } from '@/plugins/snackbar'
+
 import { layoutConfig } from '@/config/layout'
-import { RecoilRoot } from 'recoil'
 
 const materialThemeConfig = createTheme({
     palette: {
@@ -30,43 +28,32 @@ const materialThemeConfig = createTheme({
     },
 })
 
-const AppProvider: React.FC = ({ children }) => {
-    return (
-        <RecoilRoot>
-            <MaterialThemeProvider theme={materialThemeConfig}>
-                <ThemeProvider theme={materialThemeConfig}>
-                    <CssBaseline />
-                    <StyledInjectRoot />
-                    <LocalizationProvider
-                        dateAdapter={DateFnsAdapter}
-                        locale={zhLocale}
-                    >
-                        <SnackbarProvider>
-                            <EnhancedProvider>
-                                <React.Suspense
-                                    fallback={
-                                        <Loading
-                                            loading={true}
-                                            spinnerProps={getRequestLoadingProps()}
-                                        />
-                                    }
-                                >
-                                    {children}
-                                </React.Suspense>
-                            </EnhancedProvider>
-                        </SnackbarProvider>
-                    </LocalizationProvider>
-                </ThemeProvider>
-            </MaterialThemeProvider>
-        </RecoilRoot>
-    )
-}
+const AppProvider: React.FC = ({ children }) => (
+    <RecoilRoot>
+        <MaterialThemeProvider theme={materialThemeConfig}>
+            <ThemeProvider theme={materialThemeConfig}>
+                <CssBaseline />
+                <StyledInjectRoot />
+                <LocalizationProvider
+                    dateAdapter={DateAdapter}
+                    locale={zhLocale}
+                >
+                    <SnackbarProvider>
+                        <React.Suspense fallback={<div>ddd</div>}>
+                            {children}
+                        </React.Suspense>
+                    </SnackbarProvider>
+                </LocalizationProvider>
+            </ThemeProvider>
+        </MaterialThemeProvider>
+    </RecoilRoot>
+)
 
 export default AppProvider
 
 const StyledInjectRoot = createGlobalStyle<{ theme: Theme }>` 
     :root {
-        --primary_color: ${({ theme }) => theme.palette.primary.main};
-        --secondary_color: ${({ theme }) => theme.palette.secondary.main};
+        --primary-color: ${({ theme }) => theme.palette.primary.main};
+        --secondary-color: ${({ theme }) => theme.palette.secondary.main};
     } 
 `

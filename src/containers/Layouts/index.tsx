@@ -1,7 +1,9 @@
-import { Switch, Route, NavLink } from 'react-router-dom'
-import { asyncComponent } from 'react-enhanced'
+//
 import styled from 'styled-components'
-import logo from '@a/logo.svg'
+import logo from '@/assets/logo.svg'
+import { Routes, Route, NavLink } from 'react-router-dom'
+import AsyncAbout from '@/containers/Views/About'
+import AsyncHome from '@/containers/Views/Home'
 
 const menuData = [
     {
@@ -32,10 +34,10 @@ export default function LayoutPage() {
                 <Headerbox>
                     {menuData.map(({ name, path }: any) => (
                         <NavLink
-                            activeClassName="active"
-                            exact={true}
+                            className={(navData) =>
+                                navData.isActive ? 'active' : ''
+                            }
                             key={name}
-                            strict={true}
                             to={path}
                         >
                             {name}
@@ -44,25 +46,10 @@ export default function LayoutPage() {
                 </Headerbox>
             </header>
             <section>
-                <Switch>
-                    <Route
-                        component={asyncComponent(
-                            () => import('@cn/Views/Home'),
-                            {
-                                models: [() => import('@m/home')],
-                            },
-                        )}
-                        exact={true}
-                        path="/"
-                    />
-                    <Route
-                        component={asyncComponent(
-                            () => import('@cn/Views/About'),
-                        )}
-                        exact={true}
-                        path="/about"
-                    />
-                </Switch>
+                <Routes>
+                    <Route element={<AsyncHome />} path="/" />
+                    <Route element={<AsyncAbout />} path="/about" />
+                </Routes>
             </section>
         </>
     )
@@ -85,6 +72,7 @@ const Headerbox = styled.div`
         text-decoration: none;
 
         &.active {
+            color: #fff;
             background: #61dafb;
         }
     }

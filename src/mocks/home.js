@@ -1,6 +1,6 @@
 const {
     DM: {
-        api: { apiGetPackageList },
+        api: { apiHome_GetPackageList },
         relypackageList,
         packageList,
         returnAcition,
@@ -8,7 +8,7 @@ const {
 } = global
 
 module.exports = {
-    [apiGetPackageList]: (req, res) => {
+    [apiHome_GetPackageList]: (req, res) => {
         returnAcition(res, [packageList, relypackageList])
     },
 }

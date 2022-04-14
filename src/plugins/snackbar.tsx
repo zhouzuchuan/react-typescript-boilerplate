@@ -26,9 +26,11 @@ export const InitProvider = () => {
     return null
 }
 
+const TempProvider: any = Provider
+
 export const SnackbarProvider: React.FC = ({ children }) => (
-    <Provider>
+    <TempProvider>
         <InitProvider />
         {children}
-    </Provider>
+    </TempProvider>
 )

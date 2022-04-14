@@ -1,22 +1,19 @@
+import List from '@/components/List'
+import { useHome_Request, useHome_Value } from '@/models/home'
 import { useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
 import styled from 'styled-components'
-import { RequestLoading } from 'react-enhanced'
-
-import List from '@c/List'
 
 export default function HomePage() {
-    const packageList = useSelector(({ home }: any) => home?.packageList)
-    const dispatch = useDispatch()
+    const requestHome = useHome_Request()
+    const homeValue = useHome_Value()
+
     useEffect(() => {
-        dispatch({
-            type: 'home/getPackageList',
-        })
-    }, [dispatch])
+        requestHome()
+    }, [requestHome])
 
     return (
         <StyledWrap>
-            <p className="mt30 pt20">
+            <p className="mt-7 pt-5">
                 For guide and recipes on how to configure / customize this
                 project, check out the
             </p>
@@ -28,13 +25,12 @@ export default function HomePage() {
             >
                 project-boilerplates
             </a>
-            <p className="mt30">
-                To get started, edit <code>src/pages/index/App.js</code> and
+            <p className="mt-7">
+                To get started, edit <code>src/pages/index/index.ts</code> and
                 save to reload.
             </p>
-            <RequestLoading className="pad30" include="serveGetPackageList">
-                <List dataSource={packageList} />
-            </RequestLoading>
+
+            <List dataSource={homeValue.packageList} />
         </StyledWrap>
     )
 }

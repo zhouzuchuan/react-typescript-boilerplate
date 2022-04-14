@@ -4,6 +4,15 @@
         "stylelint-config-recess-order",
         "stylelint-config-prettier"
     ],
+    "overrides": [
+        {
+            "files": ["**/*.{ts,tsx}"],
+            "customSyntax": "@stylelint/postcss-css-in-js",
+            "rules": {
+                "at-rule-no-unknown": null
+            }
+        }
+    ],
     "rules": {
         "at-rule-no-unknown": [
             true,
@@ -11,6 +20,7 @@
         ],
         "no-missing-end-of-source-newline": null,
         "indentation": 4,
-        "declaration-empty-line-before": "never"
+        "declaration-empty-line-before": "never",
+        "function-no-unknown": null
     }
 }

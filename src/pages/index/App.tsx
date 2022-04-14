@@ -1,15 +1,15 @@
 import styled from 'styled-components'
-import LayoutPage from '@cn/Layouts'
+import LayoutPage from '@/containers/Layouts'
 
 export default function App() {
     return (
-        <AppWrap>
+        <StyledWrapper>
             <LayoutPage />
-        </AppWrap>
+        </StyledWrapper>
     )
 }
 
-const AppWrap = styled.div`
+const StyledWrapper = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;

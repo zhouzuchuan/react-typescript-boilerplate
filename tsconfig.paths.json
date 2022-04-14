@@ -1,15 +1,7 @@
 {
     "compilerOptions": {
         "baseUrl": "./",
-        "paths": {
-            "@a/*": ["src/assets/*"],
-            "@m/*": ["src/models/*"],
-            "@c/*": ["src/components/*"],
-            "@cn/*": ["src/containers/*"],
-            "@s/*": ["src/styles/*"],
-            "@u/*": ["src/utils/*"],
-            "@p/*": ["src/plugins/*"],
-            "@rw": ["src/serviceWorker.ts"],
+        "paths": { 
             "@/*": ["src/*"]
         }
     }
