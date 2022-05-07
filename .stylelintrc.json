@@ -1,15 +1,17 @@
 {
     "extends": [
         "stylelint-config-standard",
+        "stylelint-config-prettier",
         "stylelint-config-recess-order",
-        "stylelint-config-prettier"
+        "stylelint-config-styled-components"
     ],
     "overrides": [
         {
             "files": ["**/*.{ts,tsx}"],
             "customSyntax": "@stylelint/postcss-css-in-js",
             "rules": {
-                "at-rule-no-unknown": null
+                "at-rule-no-unknown": null,
+                "function-no-unknown": null
             }
         }
     ],
@@ -21,6 +23,6 @@
         "no-missing-end-of-source-newline": null,
         "indentation": 4,
         "declaration-empty-line-before": "never",
-        "function-no-unknown": null
+        "function-no-unknown": 0
     }
 }
