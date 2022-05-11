@@ -1337,10 +1337,10 @@
   dependencies:
     "@date-io/core" "^2.13.1"
 
-"@dseven/hooks@^0.1.4":
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/@dseven/hooks/-/hooks-0.1.4.tgz#07d276e2b345f198a3f7ea49ef0bfb1c157cc5c1"
-  integrity sha512-Zc/7xE2rf2hb3kWkXSXOV5TBPyhXjIkPiENkqi3lWlaRnnU21lgXJX/rZ9pdUojKPYPtLEjB/nz7JE5BWdt1SA==
+"@dseven/hooks@^0.1.5":
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/@dseven/hooks/-/hooks-0.1.5.tgz#c268f1ccb4ab335b0c694012b936798250749f30"
+  integrity sha512-rz0vzOYbWILrTJqceiKiZUT3hgo8ecmZSXVHI+HmQn3rv9vnDXo71tzN3ZnveoddEub3Zm24X1mlEl3f3pGlkQ==
 
 "@dseven/utils@^0.0.1":
   version "0.0.1"

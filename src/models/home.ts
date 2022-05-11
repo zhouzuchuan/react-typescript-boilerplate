@@ -20,6 +20,8 @@ export const useHome_Request = () => {
 
     return useCallback(async () => {
         const result = await serveHome_GetPackageList()
+
+        console.log(result)
         setAtomHome((old) => ({
             ...old,
             packageList: result.map((o: any, i: number) => ({

@@ -10,7 +10,7 @@
     },
     "dependencies": {
         "@date-io/dayjs": "^2.13.1",
-        "@dseven/hooks": "^0.1.4",
+        "@dseven/hooks": "^0.1.5",
         "@dseven/utils": "^0.0.1",
         "@emotion/react": "^11.9.0",
         "@emotion/styled": "^11.8.1",
